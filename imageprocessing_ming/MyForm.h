@@ -5,6 +5,7 @@
 #include<time.h>
 #include"Bouncingball.h"
 #include"GrayHistogram.h"
+#include"RGBHistogram.h"
 
 namespace imageprocessing_ming {
 
@@ -266,14 +267,14 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Gray_Histogran;
 			this->toolStrip4 = (gcnew System::Windows::Forms::ToolStrip());
 			this->Btn_overlapping = (gcnew System::Windows::Forms::ToolStripButton());
 			this->groupBox7 = (gcnew System::Windows::Forms::GroupBox());
+			this->toolStrip14 = (gcnew System::Windows::Forms::ToolStrip());
+			this->toolStripButton4 = (gcnew System::Windows::Forms::ToolStripButton());
+			this->toolStrip13 = (gcnew System::Windows::Forms::ToolStrip());
+			this->toolStripButton3 = (gcnew System::Windows::Forms::ToolStripButton());
+			this->toolStrip12 = (gcnew System::Windows::Forms::ToolStrip());
+			this->toolStripButton2 = (gcnew System::Windows::Forms::ToolStripButton());
 			this->toolStrip11 = (gcnew System::Windows::Forms::ToolStrip());
 			this->Btn_Gray_Histogran = (gcnew System::Windows::Forms::ToolStripButton());
-			this->toolStrip12 = (gcnew System::Windows::Forms::ToolStrip());
-			this->toolStrip13 = (gcnew System::Windows::Forms::ToolStrip());
-			this->toolStrip14 = (gcnew System::Windows::Forms::ToolStrip());
-			this->toolStripButton2 = (gcnew System::Windows::Forms::ToolStripButton());
-			this->toolStripButton3 = (gcnew System::Windows::Forms::ToolStripButton());
-			this->toolStripButton4 = (gcnew System::Windows::Forms::ToolStripButton());
 			this->menuStrip1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bindingSource1))->BeginInit();
 			this->groupbox1->SuspendLayout();
@@ -299,10 +300,10 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Gray_Histogran;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->overlapping_trackbar))->BeginInit();
 			this->toolStrip4->SuspendLayout();
 			this->groupBox7->SuspendLayout();
-			this->toolStrip11->SuspendLayout();
-			this->toolStrip12->SuspendLayout();
-			this->toolStrip13->SuspendLayout();
 			this->toolStrip14->SuspendLayout();
+			this->toolStrip13->SuspendLayout();
+			this->toolStrip12->SuspendLayout();
+			this->toolStrip11->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// menuStrip1
@@ -913,6 +914,61 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Gray_Histogran;
 			this->groupBox7->TabStop = false;
 			this->groupBox7->Text = L"直方圖";
 			// 
+			// toolStrip14
+			// 
+			this->toolStrip14->ImageScalingSize = System::Drawing::Size(20, 20);
+			this->toolStrip14->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->toolStripButton4 });
+			this->toolStrip14->Location = System::Drawing::Point(3, 111);
+			this->toolStrip14->Name = L"toolStrip14";
+			this->toolStrip14->Size = System::Drawing::Size(161, 27);
+			this->toolStrip14->TabIndex = 3;
+			this->toolStrip14->Text = L"toolStrip14";
+			// 
+			// toolStripButton4
+			// 
+			this->toolStripButton4->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"toolStripButton4.Image")));
+			this->toolStripButton4->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->toolStripButton4->Name = L"toolStripButton4";
+			this->toolStripButton4->Size = System::Drawing::Size(123, 24);
+			this->toolStripButton4->Text = L"直方圖規定化";
+			// 
+			// toolStrip13
+			// 
+			this->toolStrip13->ImageScalingSize = System::Drawing::Size(20, 20);
+			this->toolStrip13->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->toolStripButton3 });
+			this->toolStrip13->Location = System::Drawing::Point(3, 84);
+			this->toolStrip13->Name = L"toolStrip13";
+			this->toolStrip13->Size = System::Drawing::Size(161, 27);
+			this->toolStrip13->TabIndex = 2;
+			this->toolStrip13->Text = L"toolStrip13";
+			// 
+			// toolStripButton3
+			// 
+			this->toolStripButton3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"toolStripButton3.Image")));
+			this->toolStripButton3->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->toolStripButton3->Name = L"toolStripButton3";
+			this->toolStripButton3->Size = System::Drawing::Size(108, 24);
+			this->toolStripButton3->Text = L"直方圖等化";
+			// 
+			// toolStrip12
+			// 
+			this->toolStrip12->ImageScalingSize = System::Drawing::Size(20, 20);
+			this->toolStrip12->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->toolStripButton2 });
+			this->toolStrip12->Location = System::Drawing::Point(3, 57);
+			this->toolStrip12->Name = L"toolStrip12";
+			this->toolStrip12->Size = System::Drawing::Size(161, 27);
+			this->toolStrip12->TabIndex = 1;
+			this->toolStrip12->Text = L"toolStrip12";
+			// 
+			// toolStripButton2
+			// 
+			this->toolStripButton2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"toolStripButton2.Image")));
+			this->toolStripButton2->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->toolStripButton2->Name = L"toolStripButton2";
+			this->toolStripButton2->Size = System::Drawing::Size(108, 24);
+			this->toolStripButton2->Text = L"三色直方圖";
+			this->toolStripButton2->Click += gcnew System::EventHandler(this, &MyForm::toolStripButton2_Click);
+			// 
 			// toolStrip11
 			// 
 			this->toolStrip11->ImageScalingSize = System::Drawing::Size(20, 20);
@@ -931,60 +987,6 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Gray_Histogran;
 			this->Btn_Gray_Histogran->Size = System::Drawing::Size(108, 24);
 			this->Btn_Gray_Histogran->Text = L"灰階直方圖";
 			this->Btn_Gray_Histogran->Click += gcnew System::EventHandler(this, &MyForm::Btn_Gray_Histogran_Click);
-			// 
-			// toolStrip12
-			// 
-			this->toolStrip12->ImageScalingSize = System::Drawing::Size(20, 20);
-			this->toolStrip12->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->toolStripButton2 });
-			this->toolStrip12->Location = System::Drawing::Point(3, 57);
-			this->toolStrip12->Name = L"toolStrip12";
-			this->toolStrip12->Size = System::Drawing::Size(161, 27);
-			this->toolStrip12->TabIndex = 1;
-			this->toolStrip12->Text = L"toolStrip12";
-			// 
-			// toolStrip13
-			// 
-			this->toolStrip13->ImageScalingSize = System::Drawing::Size(20, 20);
-			this->toolStrip13->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->toolStripButton3 });
-			this->toolStrip13->Location = System::Drawing::Point(3, 84);
-			this->toolStrip13->Name = L"toolStrip13";
-			this->toolStrip13->Size = System::Drawing::Size(161, 27);
-			this->toolStrip13->TabIndex = 2;
-			this->toolStrip13->Text = L"toolStrip13";
-			// 
-			// toolStrip14
-			// 
-			this->toolStrip14->ImageScalingSize = System::Drawing::Size(20, 20);
-			this->toolStrip14->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->toolStripButton4 });
-			this->toolStrip14->Location = System::Drawing::Point(3, 111);
-			this->toolStrip14->Name = L"toolStrip14";
-			this->toolStrip14->Size = System::Drawing::Size(161, 27);
-			this->toolStrip14->TabIndex = 3;
-			this->toolStrip14->Text = L"toolStrip14";
-			// 
-			// toolStripButton2
-			// 
-			this->toolStripButton2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"toolStripButton2.Image")));
-			this->toolStripButton2->ImageTransparentColor = System::Drawing::Color::Magenta;
-			this->toolStripButton2->Name = L"toolStripButton2";
-			this->toolStripButton2->Size = System::Drawing::Size(108, 24);
-			this->toolStripButton2->Text = L"三色直方圖";
-			// 
-			// toolStripButton3
-			// 
-			this->toolStripButton3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"toolStripButton3.Image")));
-			this->toolStripButton3->ImageTransparentColor = System::Drawing::Color::Magenta;
-			this->toolStripButton3->Name = L"toolStripButton3";
-			this->toolStripButton3->Size = System::Drawing::Size(108, 24);
-			this->toolStripButton3->Text = L"直方圖等化";
-			// 
-			// toolStripButton4
-			// 
-			this->toolStripButton4->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"toolStripButton4.Image")));
-			this->toolStripButton4->ImageTransparentColor = System::Drawing::Color::Magenta;
-			this->toolStripButton4->Name = L"toolStripButton4";
-			this->toolStripButton4->Size = System::Drawing::Size(123, 24);
-			this->toolStripButton4->Text = L"直方圖規定化";
 			// 
 			// MyForm
 			// 
@@ -1055,14 +1057,14 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Gray_Histogran;
 			this->toolStrip4->PerformLayout();
 			this->groupBox7->ResumeLayout(false);
 			this->groupBox7->PerformLayout();
-			this->toolStrip11->ResumeLayout(false);
-			this->toolStrip11->PerformLayout();
-			this->toolStrip12->ResumeLayout(false);
-			this->toolStrip12->PerformLayout();
-			this->toolStrip13->ResumeLayout(false);
-			this->toolStrip13->PerformLayout();
 			this->toolStrip14->ResumeLayout(false);
 			this->toolStrip14->PerformLayout();
+			this->toolStrip13->ResumeLayout(false);
+			this->toolStrip13->PerformLayout();
+			this->toolStrip12->ResumeLayout(false);
+			this->toolStrip12->PerformLayout();
+			this->toolStrip11->ResumeLayout(false);
+			this->toolStrip11->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -1636,6 +1638,7 @@ public:void OverlappingFunction(int transparency) //transparency = 透明度
 		pictureBox2->Image = img_processed;
 	}
 }
+
 //******************************Form Design*********************
 private: System::Void openfileToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
 	OpenFileDialog ^openfiledialog1 = gcnew OpenFileDialog;
@@ -1863,8 +1866,56 @@ private: System::Void overlapping_trackbar_Scroll(System::Object^  sender, Syste
 	OverlappingFunction(transparency);
 }
 private: System::Void Btn_Gray_Histogran_Click(System::Object^  sender, System::EventArgs^  e) {
-	//GrayHistogram ^gray_histogram = gcnew GrayHistogram;
+	Bitmap ^img_processed;
+	GrayHistogram ^Gray_His = gcnew GrayHistogram;
+	ConvertColor(img_source, img_processed, RGB2Gray); //先將圖轉成灰階(因為要算灰值統計
+	short His_clolr[256] = { 0 }; //灰度值0~255 RGB值均會相同
 
+	for (int x = 0; x < (img_processed->Width); x++)
+	{
+		for (int y = 0; y < (img_processed->Height); y++)
+		{
+			int color = img_processed->GetPixel(x, y).B;
+			if (color == img_processed->GetPixel(x, y).R && color == img_processed->GetPixel(x, y).G)  //當RGB值相同(即灰色)
+			{
+				His_clolr[color] += 1;
+			}
+		}
+	}
+	for (int i = 0; i < 256; i++)  //將灰度值出現的頻率輸出到統計圖上
+	{
+		Gray_His->Gray_Chart->Series["Gray"]->Points->AddXY(i, His_clolr[i]);  //需要將.h檔中的Gray_Chart改成public才可存取
+	}
+	Gray_His-> Show(); //秀出統計圖
+}
+private: System::Void toolStripButton2_Click(System::Object^  sender, System::EventArgs^  e) {
+	Bitmap ^img_processed;
+	RGBHistogram ^RGB_His = gcnew RGBHistogram;
+	short His_Color[256][3] = { {0} };  //建立RGB矩陣 256:RGB value 3:RGB三種顏色
+	img_processed = img_source;
+
+	for (int i = 0; i < (img_processed->Width); i++)
+	{
+		for (int j = 0; j < (img_processed->Height); j++)
+		{
+			int B = img_processed->GetPixel(i, j).B;
+			int R = img_processed->GetPixel(i, j).R;
+			int G = img_processed->GetPixel(i, j).G;
+			if (!(B == Color::AliceBlue.B &&  G == Color::AliceBlue.G && R == Color::AliceBlue.R))  //當RGB三值不完全相同
+			{
+				His_Color[R][0] += 1;  //RGB三種顏色的0~255中的某值加一
+				His_Color[G][1] += 1;
+				His_Color[B][2] += 1;
+			}
+		}
+	}
+	for (int i = 0; i < 256; i++) //將RGB出現的頻率輸出到統計圖上
+	{
+		RGB_His->RGB_Chart->Series["Red"]->Points->AddXY(i, His_Color[i][0]);//需要將.h檔中的RGB_Chart改成public才可存取
+		RGB_His->RGB_Chart->Series["Green"]->Points->AddXY(i, His_Color[i][1]);
+		RGB_His->RGB_Chart->Series["Blue"]->Points->AddXY(i, His_Color[i][2]);
+	}
+	RGB_His->Show(); //秀出統計圖
 }
 };
 }

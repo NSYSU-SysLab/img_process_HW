@@ -36,11 +36,13 @@ namespace imageprocessing_ming {
 		}
 	private: System::Windows::Forms::Button^  start_ball;
 	private: System::Windows::Forms::Button^  stop_ball;
-	protected:
+	private: System::Windows::Forms::Button^  Btn_Bouncingball_Exit;
 
 	protected:
 
-	private: System::Windows::Forms::Button^  button3;
+	protected:
+
+
 	private: System::Windows::Forms::Timer^  timer1;
 	private: System::Windows::Forms::PictureBox^  ball;
 
@@ -66,7 +68,7 @@ namespace imageprocessing_ming {
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(Bouncingball::typeid));
 			this->start_ball = (gcnew System::Windows::Forms::Button());
 			this->stop_ball = (gcnew System::Windows::Forms::Button());
-			this->button3 = (gcnew System::Windows::Forms::Button());
+			this->Btn_Bouncingball_Exit = (gcnew System::Windows::Forms::Button());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->ball = (gcnew System::Windows::Forms::PictureBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ball))->BeginInit();
@@ -96,17 +98,17 @@ namespace imageprocessing_ming {
 			this->stop_ball->UseVisualStyleBackColor = true;
 			this->stop_ball->Click += gcnew System::EventHandler(this, &Bouncingball::stop_ball_Click);
 			// 
-			// button3
+			// Btn_Bouncingball_Exit
 			// 
-			this->button3->Font = (gcnew System::Drawing::Font(L"微軟正黑體", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->Btn_Bouncingball_Exit->Font = (gcnew System::Drawing::Font(L"微軟正黑體", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->button3->Location = System::Drawing::Point(383, 525);
-			this->button3->Name = L"button3";
-			this->button3->Size = System::Drawing::Size(95, 41);
-			this->button3->TabIndex = 3;
-			this->button3->Text = L"Exit";
-			this->button3->UseVisualStyleBackColor = true;
-			this->button3->Click += gcnew System::EventHandler(this, &Bouncingball::button3_Click);
+			this->Btn_Bouncingball_Exit->Location = System::Drawing::Point(383, 525);
+			this->Btn_Bouncingball_Exit->Name = L"Btn_Bouncingball_Exit";
+			this->Btn_Bouncingball_Exit->Size = System::Drawing::Size(95, 41);
+			this->Btn_Bouncingball_Exit->TabIndex = 3;
+			this->Btn_Bouncingball_Exit->Text = L"Exit";
+			this->Btn_Bouncingball_Exit->UseVisualStyleBackColor = true;
+			this->Btn_Bouncingball_Exit->Click += gcnew System::EventHandler(this, &Bouncingball::Btn_Bouncingball_Exit_Click);
 			// 
 			// timer1
 			// 
@@ -128,7 +130,7 @@ namespace imageprocessing_ming {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(582, 578);
 			this->Controls->Add(this->ball);
-			this->Controls->Add(this->button3);
+			this->Controls->Add(this->Btn_Bouncingball_Exit);
 			this->Controls->Add(this->stop_ball);
 			this->Controls->Add(this->start_ball);
 			this->Name = L"Bouncingball";
@@ -144,7 +146,7 @@ namespace imageprocessing_ming {
 	private: System::Void stop_ball_Click(System::Object^  sender, System::EventArgs^  e) {
 		timer1->Stop();
 	}
-	private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
+	private: System::Void Btn_Bouncingball_Exit_Click(System::Object^  sender, System::EventArgs^  e) {
 		Close();
 	}
 	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
