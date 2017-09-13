@@ -6,6 +6,7 @@
 #include"Bouncingball.h"
 #include"GrayHistogram.h"
 #include"RGBHistogram.h"
+#include"EqualizationHistogram.h"
 
 namespace imageprocessing_ming {
 
@@ -73,7 +74,8 @@ namespace imageprocessing_ming {
 	private: System::Windows::Forms::BindingSource^  bindingSource1;
 	private: System::Windows::Forms::GroupBox^  groupbox1;
 	private: System::Windows::Forms::ToolStrip^  toolStrip3;
-	private: System::Windows::Forms::ToolStripButton^  Btn_Threshold;
+	private: System::Windows::Forms::ToolStripButton^  Btn_Threshold_Binary;
+
 
 	private: System::Windows::Forms::ToolStrip^  toolStrip2;
 	private: System::Windows::Forms::ToolStripButton^  Btn_ToRed;
@@ -147,7 +149,8 @@ namespace imageprocessing_ming {
 
 	private: System::Windows::Forms::ToolStripButton^  Btn_RGB_Inverse;
 	private: System::Windows::Forms::Button^  Btn_Reset;
-private: System::Windows::Forms::ToolStripButton^  Btn_Threshold_Inverse;
+private: System::Windows::Forms::ToolStripButton^  Btn_Threshold_Binary_Inverse;
+
 private: System::Windows::Forms::ToolStripButton^  Btn_Gray_Inverse;
 private: System::Windows::Forms::GroupBox^  groupBox5;
 private: System::Windows::Forms::TabControl^  tabControl1;
@@ -164,11 +167,19 @@ private: System::Windows::Forms::GroupBox^  groupBox7;
 private: System::Windows::Forms::ToolStrip^  toolStrip14;
 private: System::Windows::Forms::ToolStripButton^  toolStripButton4;
 private: System::Windows::Forms::ToolStrip^  toolStrip13;
-private: System::Windows::Forms::ToolStripButton^  toolStripButton3;
+private: System::Windows::Forms::ToolStripButton^  Equalization_Histogram;
+
 private: System::Windows::Forms::ToolStrip^  toolStrip12;
-private: System::Windows::Forms::ToolStripButton^  toolStripButton2;
+private: System::Windows::Forms::ToolStripButton^  Btn_RGB_Histogram;
+
 private: System::Windows::Forms::ToolStrip^  toolStrip11;
 private: System::Windows::Forms::ToolStripButton^  Btn_Gray_Histogran;
+private: System::Windows::Forms::GroupBox^  groupBox8;
+private: System::Windows::Forms::NumericUpDown^  Threshold_value;
+private: System::Windows::Forms::ToolStrip^  toolStrip15;
+private: System::Windows::Forms::ToolStripButton^  Btn_Otsu;
+private: System::Windows::Forms::ToolStrip^  toolStrip16;
+private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 
 
 
@@ -218,8 +229,8 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Gray_Histogran;
 			this->toolStrip5 = (gcnew System::Windows::Forms::ToolStrip());
 			this->Btn_Bouncing_Ball = (gcnew System::Windows::Forms::ToolStripButton());
 			this->toolStrip3 = (gcnew System::Windows::Forms::ToolStrip());
-			this->Btn_Threshold = (gcnew System::Windows::Forms::ToolStripButton());
-			this->Btn_Threshold_Inverse = (gcnew System::Windows::Forms::ToolStripButton());
+			this->Btn_Threshold_Binary = (gcnew System::Windows::Forms::ToolStripButton());
+			this->Btn_Threshold_Binary_Inverse = (gcnew System::Windows::Forms::ToolStripButton());
 			this->toolStrip2 = (gcnew System::Windows::Forms::ToolStrip());
 			this->Btn_ToRed = (gcnew System::Windows::Forms::ToolStripButton());
 			this->Btn_ToGreen = (gcnew System::Windows::Forms::ToolStripButton());
@@ -267,14 +278,20 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Gray_Histogran;
 			this->toolStrip4 = (gcnew System::Windows::Forms::ToolStrip());
 			this->Btn_overlapping = (gcnew System::Windows::Forms::ToolStripButton());
 			this->groupBox7 = (gcnew System::Windows::Forms::GroupBox());
+			this->toolStrip16 = (gcnew System::Windows::Forms::ToolStrip());
+			this->Btn_Otsu_Histogram = (gcnew System::Windows::Forms::ToolStripButton());
 			this->toolStrip14 = (gcnew System::Windows::Forms::ToolStrip());
 			this->toolStripButton4 = (gcnew System::Windows::Forms::ToolStripButton());
 			this->toolStrip13 = (gcnew System::Windows::Forms::ToolStrip());
-			this->toolStripButton3 = (gcnew System::Windows::Forms::ToolStripButton());
+			this->Equalization_Histogram = (gcnew System::Windows::Forms::ToolStripButton());
 			this->toolStrip12 = (gcnew System::Windows::Forms::ToolStrip());
-			this->toolStripButton2 = (gcnew System::Windows::Forms::ToolStripButton());
+			this->Btn_RGB_Histogram = (gcnew System::Windows::Forms::ToolStripButton());
 			this->toolStrip11 = (gcnew System::Windows::Forms::ToolStrip());
 			this->Btn_Gray_Histogran = (gcnew System::Windows::Forms::ToolStripButton());
+			this->groupBox8 = (gcnew System::Windows::Forms::GroupBox());
+			this->toolStrip15 = (gcnew System::Windows::Forms::ToolStrip());
+			this->Btn_Otsu = (gcnew System::Windows::Forms::ToolStripButton());
+			this->Threshold_value = (gcnew System::Windows::Forms::NumericUpDown());
 			this->menuStrip1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bindingSource1))->BeginInit();
 			this->groupbox1->SuspendLayout();
@@ -300,10 +317,14 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Gray_Histogran;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->overlapping_trackbar))->BeginInit();
 			this->toolStrip4->SuspendLayout();
 			this->groupBox7->SuspendLayout();
+			this->toolStrip16->SuspendLayout();
 			this->toolStrip14->SuspendLayout();
 			this->toolStrip13->SuspendLayout();
 			this->toolStrip12->SuspendLayout();
 			this->toolStrip11->SuspendLayout();
+			this->groupBox8->SuspendLayout();
+			this->toolStrip15->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Threshold_value))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// menuStrip1
@@ -313,7 +334,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Gray_Histogran;
 			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->fileToolStripMenuItem });
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(1274, 27);
+			this->menuStrip1->Size = System::Drawing::Size(1365, 27);
 			this->menuStrip1->TabIndex = 0;
 			this->menuStrip1->Text = L"menuStrip1";
 			// 
@@ -379,31 +400,34 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Gray_Histogran;
 			// toolStrip3
 			// 
 			this->toolStrip3->ImageScalingSize = System::Drawing::Size(20, 20);
-			this->toolStrip3->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) { this->Btn_Threshold, this->Btn_Threshold_Inverse });
+			this->toolStrip3->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+				this->Btn_Threshold_Binary,
+					this->Btn_Threshold_Binary_Inverse
+			});
 			this->toolStrip3->Location = System::Drawing::Point(3, 84);
 			this->toolStrip3->Name = L"toolStrip3";
 			this->toolStrip3->Size = System::Drawing::Size(131, 27);
 			this->toolStrip3->TabIndex = 2;
 			this->toolStrip3->Text = L"toolStrip3";
 			// 
-			// Btn_Threshold
+			// Btn_Threshold_Binary
 			// 
-			this->Btn_Threshold->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Threshold.Image")));
-			this->Btn_Threshold->ImageTransparentColor = System::Drawing::Color::Magenta;
-			this->Btn_Threshold->Name = L"Btn_Threshold";
-			this->Btn_Threshold->Size = System::Drawing::Size(78, 24);
-			this->Btn_Threshold->Text = L"二值化";
-			this->Btn_Threshold->Click += gcnew System::EventHandler(this, &MyForm::Btn_Threshold_Click);
+			this->Btn_Threshold_Binary->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Threshold_Binary.Image")));
+			this->Btn_Threshold_Binary->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->Btn_Threshold_Binary->Name = L"Btn_Threshold_Binary";
+			this->Btn_Threshold_Binary->Size = System::Drawing::Size(78, 24);
+			this->Btn_Threshold_Binary->Text = L"二值化";
+			this->Btn_Threshold_Binary->Click += gcnew System::EventHandler(this, &MyForm::Btn_Threshold_Binary_Click);
 			// 
-			// Btn_Threshold_Inverse
+			// Btn_Threshold_Binary_Inverse
 			// 
-			this->Btn_Threshold_Inverse->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Threshold_Inverse.Image")));
-			this->Btn_Threshold_Inverse->ImageTransparentColor = System::Drawing::Color::Magenta;
-			this->Btn_Threshold_Inverse->Name = L"Btn_Threshold_Inverse";
-			this->Btn_Threshold_Inverse->RightToLeft = System::Windows::Forms::RightToLeft::No;
-			this->Btn_Threshold_Inverse->Size = System::Drawing::Size(93, 24);
-			this->Btn_Threshold_Inverse->Text = L"逆二值化";
-			this->Btn_Threshold_Inverse->Click += gcnew System::EventHandler(this, &MyForm::Btn_Threshold_Inverse_Click_1);
+			this->Btn_Threshold_Binary_Inverse->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Threshold_Binary_Inverse.Image")));
+			this->Btn_Threshold_Binary_Inverse->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->Btn_Threshold_Binary_Inverse->Name = L"Btn_Threshold_Binary_Inverse";
+			this->Btn_Threshold_Binary_Inverse->RightToLeft = System::Windows::Forms::RightToLeft::No;
+			this->Btn_Threshold_Binary_Inverse->Size = System::Drawing::Size(93, 24);
+			this->Btn_Threshold_Binary_Inverse->Text = L"逆二值化";
+			this->Btn_Threshold_Binary_Inverse->Click += gcnew System::EventHandler(this, &MyForm::Btn_Threshold_Binary_Inverse_Click_1);
 			// 
 			// toolStrip2
 			// 
@@ -901,6 +925,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Gray_Histogran;
 			// 
 			// groupBox7
 			// 
+			this->groupBox7->Controls->Add(this->toolStrip16);
 			this->groupBox7->Controls->Add(this->toolStrip14);
 			this->groupBox7->Controls->Add(this->toolStrip13);
 			this->groupBox7->Controls->Add(this->toolStrip12);
@@ -909,10 +934,28 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Gray_Histogran;
 				static_cast<System::Byte>(136)));
 			this->groupBox7->Location = System::Drawing::Point(975, 30);
 			this->groupBox7->Name = L"groupBox7";
-			this->groupBox7->Size = System::Drawing::Size(167, 156);
+			this->groupBox7->Size = System::Drawing::Size(167, 207);
 			this->groupBox7->TabIndex = 21;
 			this->groupBox7->TabStop = false;
 			this->groupBox7->Text = L"直方圖";
+			// 
+			// toolStrip16
+			// 
+			this->toolStrip16->ImageScalingSize = System::Drawing::Size(20, 20);
+			this->toolStrip16->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->Btn_Otsu_Histogram });
+			this->toolStrip16->Location = System::Drawing::Point(3, 138);
+			this->toolStrip16->Name = L"toolStrip16";
+			this->toolStrip16->Size = System::Drawing::Size(161, 27);
+			this->toolStrip16->TabIndex = 4;
+			this->toolStrip16->Text = L"toolStrip16";
+			// 
+			// Btn_Otsu_Histogram
+			// 
+			this->Btn_Otsu_Histogram->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Otsu_Histogram.Image")));
+			this->Btn_Otsu_Histogram->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->Btn_Otsu_Histogram->Name = L"Btn_Otsu_Histogram";
+			this->Btn_Otsu_Histogram->Size = System::Drawing::Size(115, 24);
+			this->Btn_Otsu_Histogram->Text = L"O\'tsu直方圖";
 			// 
 			// toolStrip14
 			// 
@@ -935,39 +978,40 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Gray_Histogran;
 			// toolStrip13
 			// 
 			this->toolStrip13->ImageScalingSize = System::Drawing::Size(20, 20);
-			this->toolStrip13->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->toolStripButton3 });
+			this->toolStrip13->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->Equalization_Histogram });
 			this->toolStrip13->Location = System::Drawing::Point(3, 84);
 			this->toolStrip13->Name = L"toolStrip13";
 			this->toolStrip13->Size = System::Drawing::Size(161, 27);
 			this->toolStrip13->TabIndex = 2;
 			this->toolStrip13->Text = L"toolStrip13";
 			// 
-			// toolStripButton3
+			// Equalization_Histogram
 			// 
-			this->toolStripButton3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"toolStripButton3.Image")));
-			this->toolStripButton3->ImageTransparentColor = System::Drawing::Color::Magenta;
-			this->toolStripButton3->Name = L"toolStripButton3";
-			this->toolStripButton3->Size = System::Drawing::Size(108, 24);
-			this->toolStripButton3->Text = L"直方圖等化";
+			this->Equalization_Histogram->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Equalization_Histogram.Image")));
+			this->Equalization_Histogram->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->Equalization_Histogram->Name = L"Equalization_Histogram";
+			this->Equalization_Histogram->Size = System::Drawing::Size(108, 24);
+			this->Equalization_Histogram->Text = L"直方圖等化";
+			this->Equalization_Histogram->Click += gcnew System::EventHandler(this, &MyForm::Equalization_Histogram_Click);
 			// 
 			// toolStrip12
 			// 
 			this->toolStrip12->ImageScalingSize = System::Drawing::Size(20, 20);
-			this->toolStrip12->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->toolStripButton2 });
+			this->toolStrip12->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->Btn_RGB_Histogram });
 			this->toolStrip12->Location = System::Drawing::Point(3, 57);
 			this->toolStrip12->Name = L"toolStrip12";
 			this->toolStrip12->Size = System::Drawing::Size(161, 27);
 			this->toolStrip12->TabIndex = 1;
 			this->toolStrip12->Text = L"toolStrip12";
 			// 
-			// toolStripButton2
+			// Btn_RGB_Histogram
 			// 
-			this->toolStripButton2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"toolStripButton2.Image")));
-			this->toolStripButton2->ImageTransparentColor = System::Drawing::Color::Magenta;
-			this->toolStripButton2->Name = L"toolStripButton2";
-			this->toolStripButton2->Size = System::Drawing::Size(108, 24);
-			this->toolStripButton2->Text = L"三色直方圖";
-			this->toolStripButton2->Click += gcnew System::EventHandler(this, &MyForm::toolStripButton2_Click);
+			this->Btn_RGB_Histogram->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_RGB_Histogram.Image")));
+			this->Btn_RGB_Histogram->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->Btn_RGB_Histogram->Name = L"Btn_RGB_Histogram";
+			this->Btn_RGB_Histogram->Size = System::Drawing::Size(108, 24);
+			this->Btn_RGB_Histogram->Text = L"三色直方圖";
+			this->Btn_RGB_Histogram->Click += gcnew System::EventHandler(this, &MyForm::Btn_RGB_Histogram_Click);
 			// 
 			// toolStrip11
 			// 
@@ -988,11 +1032,54 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Gray_Histogran;
 			this->Btn_Gray_Histogran->Text = L"灰階直方圖";
 			this->Btn_Gray_Histogran->Click += gcnew System::EventHandler(this, &MyForm::Btn_Gray_Histogran_Click);
 			// 
+			// groupBox8
+			// 
+			this->groupBox8->Controls->Add(this->toolStrip15);
+			this->groupBox8->Controls->Add(this->Threshold_value);
+			this->groupBox8->Font = (gcnew System::Drawing::Font(L"微軟正黑體", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(136)));
+			this->groupBox8->Location = System::Drawing::Point(1161, 38);
+			this->groupBox8->Name = L"groupBox8";
+			this->groupBox8->Size = System::Drawing::Size(154, 130);
+			this->groupBox8->TabIndex = 22;
+			this->groupBox8->TabStop = false;
+			this->groupBox8->Text = L"閥值";
+			// 
+			// toolStrip15
+			// 
+			this->toolStrip15->Dock = System::Windows::Forms::DockStyle::None;
+			this->toolStrip15->ImageScalingSize = System::Drawing::Size(20, 20);
+			this->toolStrip15->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->Btn_Otsu });
+			this->toolStrip15->Location = System::Drawing::Point(12, 67);
+			this->toolStrip15->Name = L"toolStrip15";
+			this->toolStrip15->Size = System::Drawing::Size(82, 27);
+			this->toolStrip15->TabIndex = 1;
+			this->toolStrip15->Text = L"toolStrip15";
+			// 
+			// Btn_Otsu
+			// 
+			this->Btn_Otsu->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Otsu.Image")));
+			this->Btn_Otsu->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->Btn_Otsu->Name = L"Btn_Otsu";
+			this->Btn_Otsu->Size = System::Drawing::Size(70, 24);
+			this->Btn_Otsu->Text = L"O\'tsu";
+			this->Btn_Otsu->Click += gcnew System::EventHandler(this, &MyForm::Btn_Otsu_Click);
+			// 
+			// Threshold_value
+			// 
+			this->Threshold_value->Location = System::Drawing::Point(12, 30);
+			this->Threshold_value->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 255, 0, 0, 0 });
+			this->Threshold_value->Name = L"Threshold_value";
+			this->Threshold_value->Size = System::Drawing::Size(130, 34);
+			this->Threshold_value->TabIndex = 0;
+			this->Threshold_value->ValueChanged += gcnew System::EventHandler(this, &MyForm::Threshold_value_ValueChanged);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 15);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1274, 935);
+			this->ClientSize = System::Drawing::Size(1365, 935);
+			this->Controls->Add(this->groupBox8);
 			this->Controls->Add(this->groupBox7);
 			this->Controls->Add(this->groupBox6);
 			this->Controls->Add(this->tabControl1);
@@ -1057,6 +1144,8 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Gray_Histogran;
 			this->toolStrip4->PerformLayout();
 			this->groupBox7->ResumeLayout(false);
 			this->groupBox7->PerformLayout();
+			this->toolStrip16->ResumeLayout(false);
+			this->toolStrip16->PerformLayout();
 			this->toolStrip14->ResumeLayout(false);
 			this->toolStrip14->PerformLayout();
 			this->toolStrip13->ResumeLayout(false);
@@ -1065,6 +1154,11 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Gray_Histogran;
 			this->toolStrip12->PerformLayout();
 			this->toolStrip11->ResumeLayout(false);
 			this->toolStrip11->PerformLayout();
+			this->groupBox8->ResumeLayout(false);
+			this->groupBox8->PerformLayout();
+			this->toolStrip15->ResumeLayout(false);
+			this->toolStrip15->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Threshold_value))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -1340,7 +1434,7 @@ public:void ConvertColor(Bitmap ^src, Bitmap ^%dst, int code)  //scr原圖 dst處理
 
 public:void Threshold(Bitmap ^src, Bitmap ^%dst, int threshold,int code)
 {
-	for (int i = 0; i < src->Width; i++)  //size_t 是unsigned int 
+	for (int i = 0; i < src->Width; i++) //確認是否有先灰階化
 	{
 		for (int j = 0; j < src->Height; j++)
 		{
@@ -1358,16 +1452,16 @@ public:void Threshold(Bitmap ^src, Bitmap ^%dst, int threshold,int code)
 			if (src->GetPixel(i, j).R >= threshold)  //灰階化後RGB的value都一樣
 			{
 				if (code == Threshold_Binary)
-					src->SetPixel(i, j, Color::FromArgb(255, 255, 255));  //白
+					dst->SetPixel(i, j, Color::FromArgb(255, 255, 255));  //白
 				else if (code == Threshold_Binary_Inverse)
-					src->SetPixel(i, j, Color::FromArgb(0, 0, 0));  //黑
+					dst->SetPixel(i, j, Color::FromArgb(0, 0, 0));  //黑
 			}
 			else if (src->GetPixel(i, j).R < threshold)
 			{
 				if (code == Threshold_Binary)
-					src->SetPixel(i, j, Color::FromArgb(0, 0, 0));  //黑
+					dst->SetPixel(i, j, Color::FromArgb(0, 0, 0));  //黑
 				else if (code == Threshold_Binary_Inverse)
-					src->SetPixel(i, j, Color::FromArgb(255,255,255));  //白
+					dst->SetPixel(i, j, Color::FromArgb(255,255,255));  //白
 			}
 			
 		}
@@ -1639,6 +1733,36 @@ public:void OverlappingFunction(int transparency) //transparency = 透明度
 	}
 }
 
+public:void Threshold_Changing(Bitmap ^src, Bitmap ^%dst, int threshold)
+{
+	for (int i = 0; i < src->Width; i++)   //確認是否有先灰階化
+	{
+		for (int j = 0; j < src->Height; j++)
+		{
+			if (src->GetPixel(i, j).R != src->GetPixel(i, j).G || src->GetPixel(i, j).R != src->GetPixel(i, j).B)
+			{
+				MessageBox::Show("Convert to Gray First.");
+				break;
+			}
+		}
+	}
+	for (int i = 0; i < src->Width; i++)
+	{
+		for (int j = 0; j < src->Height; j++)
+		{
+			if (src->GetPixel(i, j).R >= threshold)  //灰階化後RGB的value都一樣
+			{
+					dst->SetPixel(i, j, Color::FromArgb(255, 255, 255));  //白
+			}
+			else if (src->GetPixel(i, j).R < threshold)
+			{
+					dst->SetPixel(i, j, Color::FromArgb(0, 0, 0));  //黑
+			}
+
+		}
+	}
+}
+
 //******************************Form Design*********************
 private: System::Void openfileToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
 	OpenFileDialog ^openfiledialog1 = gcnew OpenFileDialog;
@@ -1722,13 +1846,13 @@ private: System::Void Btn_RGB_Inverse_Click(System::Object^  sender, System::Eve
 	ConvertColor(img_source, img_processed, RGB_Inverse);
 	pictureBox2->Image = img_processed;
 }
-private: System::Void Btn_Threshold_Click(System::Object^  sender, System::EventArgs^  e) {
+private: System::Void Btn_Threshold_Binary_Click(System::Object^  sender, System::EventArgs^  e) {
 	Bitmap ^img_processed;
 	ConvertColor(img_source, img_processed, RGB2Gray);
 	Threshold(img_processed,img_processed,100,Threshold_Binary);
 	pictureBox2->Image = img_processed;
 }
-private: System::Void Btn_Threshold_Inverse_Click_1(System::Object^  sender, System::EventArgs^  e) {
+private: System::Void Btn_Threshold_Binary_Inverse_Click_1(System::Object^  sender, System::EventArgs^  e) {
 	Bitmap ^img_processed;
 	ConvertColor(img_source, img_processed, RGB2Gray);
 	Threshold(img_processed, img_processed, 100, Threshold_Binary_Inverse);
@@ -1869,7 +1993,7 @@ private: System::Void Btn_Gray_Histogran_Click(System::Object^  sender, System::
 	Bitmap ^img_processed;
 	GrayHistogram ^Gray_His = gcnew GrayHistogram;
 	ConvertColor(img_source, img_processed, RGB2Gray); //先將圖轉成灰階(因為要算灰值統計
-	short His_clolr[256] = { 0 }; //灰度值0~255 RGB值均會相同
+	short His_color[256] = { 0 }; //灰度值0~255 RGB值均會相同
 
 	for (int x = 0; x < (img_processed->Width); x++)
 	{
@@ -1878,17 +2002,17 @@ private: System::Void Btn_Gray_Histogran_Click(System::Object^  sender, System::
 			int color = img_processed->GetPixel(x, y).B;
 			if (color == img_processed->GetPixel(x, y).R && color == img_processed->GetPixel(x, y).G)  //當RGB值相同(即灰色)
 			{
-				His_clolr[color] += 1;
+				His_color[color] += 1;
 			}
 		}
 	}
 	for (int i = 0; i < 256; i++)  //將灰度值出現的頻率輸出到統計圖上
 	{
-		Gray_His->Gray_Chart->Series["Gray"]->Points->AddXY(i, His_clolr[i]);  //需要將.h檔中的Gray_Chart改成public才可存取
+		Gray_His->Gray_Chart->Series["Gray"]->Points->AddXY(i, His_color[i]);  //需要將.h檔中的Gray_Chart改成public才可存取
 	}
 	Gray_His-> Show(); //秀出統計圖
 }
-private: System::Void toolStripButton2_Click(System::Object^  sender, System::EventArgs^  e) {
+private: System::Void Btn_RGB_Histogram_Click(System::Object^  sender, System::EventArgs^  e) {
 	Bitmap ^img_processed;
 	RGBHistogram ^RGB_His = gcnew RGBHistogram;
 	short His_Color[256][3] = { {0} };  //建立RGB矩陣 256:RGB value 3:RGB三種顏色
@@ -1916,6 +2040,106 @@ private: System::Void toolStripButton2_Click(System::Object^  sender, System::Ev
 		RGB_His->RGB_Chart->Series["Blue"]->Points->AddXY(i, His_Color[i][2]);
 	}
 	RGB_His->Show(); //秀出統計圖
+}
+private: System::Void Equalization_Histogram_Click(System::Object^  sender, System::EventArgs^  e) {
+	Bitmap ^img_processed;
+	EqualizationHistogram ^Equa_His = gcnew EqualizationHistogram;
+	ConvertColor(img_source, img_processed, RGB2Gray);
+
+
+
+}
+private: System::Void Threshold_value_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
+	Bitmap ^img_processed;
+	int threshold = Convert::ToInt32(Threshold_value->Text);//讀取輸入的閥值
+	ConvertColor(img_source, img_processed, RGB2Gray);//灰階化
+	Threshold_Changing(img_processed, img_processed, threshold);//動態二值化
+	pictureBox2->Image = img_processed;
+}
+private: System::Void Btn_Otsu_Click(System::Object^  sender, System::EventArgs^  e) {
+	/*利用Otsu進行影像二值化的流程如下：
+	  1. 取得影像的直方圖
+	  2. 利用Otsu對直方圖找出最佳的閥值
+	  3. 利用找出來的閥值將影像二值化*/
+	Bitmap ^img_processed;
+	ConvertColor(img_source, img_processed, RGB2Gray); //先將圖轉成灰階(因為要算灰值統計)
+	float His_color[256] = { 0 }; //灰度值0~255 RGB值均會相同
+	float total_pixel = (img_processed->Width) * (img_processed->Height); //計算整張圖片的pixel數
+
+	//*** 1. 取得影像的直方圖，計算出每個灰度值出現的pixel數 ***
+	for (int x = 0; x < (img_processed->Width); x++) 
+	{
+		for (int y = 0; y < (img_processed->Height); y++)
+		{
+			int color = img_processed->GetPixel(x, y).R;
+			if (color == img_processed->GetPixel(x, y).G && color == img_processed->GetPixel(x, y).B)  //當RGB值相同(即灰色)
+			{
+				His_color[color] += 1; //0~255出現的那個灰度值+1，計算出現頻率
+			}
+		}
+	}
+	//計算每個灰度值出現的機率
+	float P[256] = { 0 }; 
+	for (int i = 0; i < 256; i++)
+	{
+		P[i] = (His_color[i]) / total_pixel;
+	}
+	//計算灰度值總平均
+	float mu = 0;
+	for (int i = 0; i < 256; i++)
+	{
+		mu += i*(P[i]);
+	}
+	//開始計算各種參數
+	float max_variance_between = 0; //初始化群間變異數最大值
+	int Otsu_threshold = 0;//初始化Otsu閥值
+
+	for (int i = 0; i < 256; i++) //灰度值0~255
+	{
+		float w1 = 0, w2 = 0; //第一群與第二群出現的機率
+		float mu1 = 0, mu2 = 0; //第一群與第二群的平均
+		float variance1 = 0, variance2 = 0;//第一群與第二群的變異數
+		float variance_between = 0;//群間變異數
+
+		for (int t = 0; t < i; t++)  //計算第一群
+		{
+			w1 += P[t];
+		}
+		for (int t = 0; t < i; t++)  
+		{
+			mu1 += t * (P[t] / w1);
+		}
+		/*for (int t = 0; t < i; t++)  //變異數用不到
+		{
+			variance1 += (P[t] / w1)*(t - mu1)*(t - mu1);
+		}*/
+
+
+		for (int t = i; t < 256; t++)  //計算第二群
+		{
+			w2 += P[t];
+		}
+		for (int t = i; t < 256; t++)  
+		{
+			mu2 += t * (P[t] / w2);
+		}
+		/*for (int t = i; t < 256; t++)  //變異數用不到
+		{
+			variance2 += (P[t] / w2)*(t - mu2)*(t - mu2);
+		}*/
+
+		//Otsu群間最大差異的評估準則
+		variance_between = w1*(mu1 - mu)*(mu1 - mu) + w2*(mu2 - mu)*(mu2 - mu);
+		if (max_variance_between < variance_between)
+		{
+			max_variance_between = variance_between;
+			Otsu_threshold = i;   //***2. 利用Otsu對直方圖找出最佳的閥值***
+		}
+	}
+	Threshold_Changing(img_processed, img_processed, Otsu_threshold);//*** 3. 利用找出來的閥值將影像二值化***
+	Threshold_value->Text = Otsu_threshold.ToString();
+	pictureBox2->Image = img_processed;
+
 }
 };
 }
