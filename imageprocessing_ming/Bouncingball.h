@@ -78,9 +78,10 @@ namespace imageprocessing_ming {
 			// 
 			this->start_ball->Font = (gcnew System::Drawing::Font(L"微軟正黑體", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->start_ball->Location = System::Drawing::Point(52, 525);
+			this->start_ball->Location = System::Drawing::Point(39, 420);
+			this->start_ball->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->start_ball->Name = L"start_ball";
-			this->start_ball->Size = System::Drawing::Size(92, 41);
+			this->start_ball->Size = System::Drawing::Size(69, 33);
 			this->start_ball->TabIndex = 1;
 			this->start_ball->Text = L"Start";
 			this->start_ball->UseVisualStyleBackColor = true;
@@ -90,9 +91,10 @@ namespace imageprocessing_ming {
 			// 
 			this->stop_ball->Font = (gcnew System::Drawing::Font(L"微軟正黑體", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->stop_ball->Location = System::Drawing::Point(215, 525);
+			this->stop_ball->Location = System::Drawing::Point(161, 420);
+			this->stop_ball->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->stop_ball->Name = L"stop_ball";
-			this->stop_ball->Size = System::Drawing::Size(92, 41);
+			this->stop_ball->Size = System::Drawing::Size(69, 33);
 			this->stop_ball->TabIndex = 2;
 			this->stop_ball->Text = L"Stop";
 			this->stop_ball->UseVisualStyleBackColor = true;
@@ -102,9 +104,10 @@ namespace imageprocessing_ming {
 			// 
 			this->Btn_Bouncingball_Exit->Font = (gcnew System::Drawing::Font(L"微軟正黑體", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->Btn_Bouncingball_Exit->Location = System::Drawing::Point(383, 525);
+			this->Btn_Bouncingball_Exit->Location = System::Drawing::Point(287, 420);
+			this->Btn_Bouncingball_Exit->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->Btn_Bouncingball_Exit->Name = L"Btn_Bouncingball_Exit";
-			this->Btn_Bouncingball_Exit->Size = System::Drawing::Size(95, 41);
+			this->Btn_Bouncingball_Exit->Size = System::Drawing::Size(71, 33);
 			this->Btn_Bouncingball_Exit->TabIndex = 3;
 			this->Btn_Bouncingball_Exit->Text = L"Exit";
 			this->Btn_Bouncingball_Exit->UseVisualStyleBackColor = true;
@@ -118,21 +121,23 @@ namespace imageprocessing_ming {
 			// 
 			this->ball->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"ball.Image")));
 			this->ball->Location = System::Drawing::Point(0, 0);
+			this->ball->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->ball->Name = L"ball";
-			this->ball->Size = System::Drawing::Size(100, 100);
+			this->ball->Size = System::Drawing::Size(75, 80);
 			this->ball->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->ball->TabIndex = 4;
 			this->ball->TabStop = false;
 			// 
 			// Bouncingball
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 15);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(582, 578);
+			this->ClientSize = System::Drawing::Size(436, 462);
 			this->Controls->Add(this->ball);
 			this->Controls->Add(this->Btn_Bouncingball_Exit);
 			this->Controls->Add(this->stop_ball);
 			this->Controls->Add(this->start_ball);
+			this->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->Name = L"Bouncingball";
 			this->Text = L"Bouncingball";
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ball))->EndInit();

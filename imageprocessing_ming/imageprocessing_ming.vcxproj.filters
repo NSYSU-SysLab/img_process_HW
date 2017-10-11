@@ -30,6 +30,12 @@
     <ClCompile Include="EqualizationHistogram.cpp">
       <Filter>原始程式檔</Filter>
     </ClCompile>
+    <ClCompile Include="OtsuHistogram.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="SpecificationHistogram.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MyForm.h">
@@ -47,6 +53,12 @@
     <ClInclude Include="EqualizationHistogram.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
+    <ClInclude Include="OtsuHistogram.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="SpecificationHistogram.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MyForm.resx">
@@ -56,6 +68,15 @@
       <Filter>資源檔</Filter>
     </EmbeddedResource>
     <EmbeddedResource Include="GrayHistogram.resx">
+      <Filter>資源檔</Filter>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EqualizationHistogram.resx">
+      <Filter>資源檔</Filter>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RGBHistogram.resx">
+      <Filter>資源檔</Filter>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OtsuHistogram.resx">
       <Filter>資源檔</Filter>
     </EmbeddedResource>
   </ItemGroup>

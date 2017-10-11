@@ -7,6 +7,8 @@
 #include"GrayHistogram.h"
 #include"RGBHistogram.h"
 #include"EqualizationHistogram.h"
+#include"OtsuHistogram.h"
+#include"SpecificationHistogram.h"
 
 namespace imageprocessing_ming {
 
@@ -31,9 +33,14 @@ namespace imageprocessing_ming {
 	    Diagonal,
 		Threshold_Binary,
 		Threshold_Binary_Inverse,
-		Duplication,  //½Æ»s
+		Zoom,  //¥ô·NÁY©ñ
+		Duplication,  //½Æ»s©ñ¤j
+		Interpolation,//´¡­È©ñ¤j
+		Decimation, //§R¥hÁY¤p
+		Average, //¥­§¡ÁY¤p
 		Other
 	};
+
 
 	enum Pen_Select
 	{
@@ -42,6 +49,13 @@ namespace imageprocessing_ming {
 		Pen_Circle,
 		Pen_Rect
 	};
+
+	enum Gray_His {
+		gray_histogram,
+		specification_histogram_origin,
+		specification_histogram_object
+	};
+
 	/// <summary>
 	/// MyForm ªººK­n
 	/// </summary>
@@ -109,7 +123,7 @@ namespace imageprocessing_ming {
 		Bitmap ^img_source2;
 		Point LBtnDown;
 		int d_Pen;
-		
+		SpecificationHistogram ^Specification_His = gcnew SpecificationHistogram;
 
 	private: System::Windows::Forms::GroupBox^  groupBox2;
 	private: System::Windows::Forms::ToolStrip^  toolStrip8;
@@ -161,11 +175,13 @@ private: System::Windows::Forms::ToolStripMenuItem^  openfile2ToolStripMenuItem;
 private: System::Windows::Forms::GroupBox^  groupBox6;
 private: System::Windows::Forms::TrackBar^  overlapping_trackbar;
 private: System::Windows::Forms::ToolStrip^  toolStrip4;
-private: System::Windows::Forms::ToolStripButton^  Btn_overlapping;
+private: System::Windows::Forms::ToolStripButton^  Btn_Overlapping;
+
 private: System::Windows::Forms::Label^  label4;
 private: System::Windows::Forms::GroupBox^  groupBox7;
 private: System::Windows::Forms::ToolStrip^  toolStrip14;
-private: System::Windows::Forms::ToolStripButton^  toolStripButton4;
+private: System::Windows::Forms::ToolStripButton^  Specification_Histogram;
+
 private: System::Windows::Forms::ToolStrip^  toolStrip13;
 private: System::Windows::Forms::ToolStripButton^  Equalization_Histogram;
 
@@ -176,10 +192,30 @@ private: System::Windows::Forms::ToolStrip^  toolStrip11;
 private: System::Windows::Forms::ToolStripButton^  Btn_Gray_Histogran;
 private: System::Windows::Forms::GroupBox^  groupBox8;
 private: System::Windows::Forms::NumericUpDown^  Threshold_value;
+
+
 private: System::Windows::Forms::ToolStrip^  toolStrip15;
 private: System::Windows::Forms::ToolStripButton^  Btn_Otsu;
 private: System::Windows::Forms::ToolStrip^  toolStrip16;
 private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
+
+
+private: System::Windows::Forms::ToolStrip^  toolStrip19;
+private: System::Windows::Forms::ToolStripButton^  toolStripButton2;
+
+
+private: System::Windows::Forms::ToolStrip^  toolStrip18;
+private: System::Windows::Forms::ToolStripButton^  toolStripButton1;
+private: System::Windows::Forms::ToolStripButton^  Btn_Decimation_Reduce;
+private: System::Windows::Forms::ToolStripButton^  Btn_Average_Reduce;
+private: System::Windows::Forms::ToolStripButton^  Btn_Duplication_Enlarge;
+private: System::Windows::Forms::ToolStripButton^  Btn_Interpolation_Enlarge;
+private: System::Windows::Forms::ToolStrip^  toolStrip17;
+private: System::Windows::Forms::ToolStripButton^  Btn_Subtracting;
+
+
+
+
 
 
 
@@ -250,6 +286,14 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->toolStrip6 = (gcnew System::Windows::Forms::ToolStrip());
 			this->Btn_Horizontal_Flip = (gcnew System::Windows::Forms::ToolStripButton());
 			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
+			this->toolStrip19 = (gcnew System::Windows::Forms::ToolStrip());
+			this->toolStripButton2 = (gcnew System::Windows::Forms::ToolStripButton());
+			this->Btn_Decimation_Reduce = (gcnew System::Windows::Forms::ToolStripButton());
+			this->Btn_Average_Reduce = (gcnew System::Windows::Forms::ToolStripButton());
+			this->toolStrip18 = (gcnew System::Windows::Forms::ToolStrip());
+			this->toolStripButton1 = (gcnew System::Windows::Forms::ToolStripButton());
+			this->Btn_Duplication_Enlarge = (gcnew System::Windows::Forms::ToolStripButton());
+			this->Btn_Interpolation_Enlarge = (gcnew System::Windows::Forms::ToolStripButton());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->toolStrip10 = (gcnew System::Windows::Forms::ToolStrip());
 			this->Btn_Zoom = (gcnew System::Windows::Forms::ToolStripButton());
@@ -273,15 +317,17 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->tabPage2 = (gcnew System::Windows::Forms::TabPage());
 			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
 			this->groupBox6 = (gcnew System::Windows::Forms::GroupBox());
+			this->toolStrip17 = (gcnew System::Windows::Forms::ToolStrip());
+			this->Btn_Subtracting = (gcnew System::Windows::Forms::ToolStripButton());
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->overlapping_trackbar = (gcnew System::Windows::Forms::TrackBar());
 			this->toolStrip4 = (gcnew System::Windows::Forms::ToolStrip());
-			this->Btn_overlapping = (gcnew System::Windows::Forms::ToolStripButton());
+			this->Btn_Overlapping = (gcnew System::Windows::Forms::ToolStripButton());
 			this->groupBox7 = (gcnew System::Windows::Forms::GroupBox());
 			this->toolStrip16 = (gcnew System::Windows::Forms::ToolStrip());
 			this->Btn_Otsu_Histogram = (gcnew System::Windows::Forms::ToolStripButton());
 			this->toolStrip14 = (gcnew System::Windows::Forms::ToolStrip());
-			this->toolStripButton4 = (gcnew System::Windows::Forms::ToolStripButton());
+			this->Specification_Histogram = (gcnew System::Windows::Forms::ToolStripButton());
 			this->toolStrip13 = (gcnew System::Windows::Forms::ToolStrip());
 			this->Equalization_Histogram = (gcnew System::Windows::Forms::ToolStripButton());
 			this->toolStrip12 = (gcnew System::Windows::Forms::ToolStrip());
@@ -306,6 +352,8 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->toolStrip7->SuspendLayout();
 			this->toolStrip6->SuspendLayout();
 			this->groupBox3->SuspendLayout();
+			this->toolStrip19->SuspendLayout();
+			this->toolStrip18->SuspendLayout();
 			this->toolStrip10->SuspendLayout();
 			this->toolStrip9->SuspendLayout();
 			this->groupBox4->SuspendLayout();
@@ -314,6 +362,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->tabPage2->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->BeginInit();
 			this->groupBox6->SuspendLayout();
+			this->toolStrip17->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->overlapping_trackbar))->BeginInit();
 			this->toolStrip4->SuspendLayout();
 			this->groupBox7->SuspendLayout();
@@ -334,7 +383,8 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->fileToolStripMenuItem });
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(1365, 27);
+			this->menuStrip1->Padding = System::Windows::Forms::Padding(4, 2, 0, 2);
+			this->menuStrip1->Size = System::Drawing::Size(1024, 24);
 			this->menuStrip1->TabIndex = 0;
 			this->menuStrip1->Text = L"menuStrip1";
 			// 
@@ -345,20 +395,20 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 					this->openfile2ToolStripMenuItem
 			});
 			this->fileToolStripMenuItem->Name = L"fileToolStripMenuItem";
-			this->fileToolStripMenuItem->Size = System::Drawing::Size(45, 23);
+			this->fileToolStripMenuItem->Size = System::Drawing::Size(38, 20);
 			this->fileToolStripMenuItem->Text = L"File";
 			// 
 			// openfileToolStripMenuItem
 			// 
 			this->openfileToolStripMenuItem->Name = L"openfileToolStripMenuItem";
-			this->openfileToolStripMenuItem->Size = System::Drawing::Size(152, 26);
+			this->openfileToolStripMenuItem->Size = System::Drawing::Size(152, 22);
 			this->openfileToolStripMenuItem->Text = L"Openfile";
 			this->openfileToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::openfileToolStripMenuItem_Click);
 			// 
 			// openfile2ToolStripMenuItem
 			// 
 			this->openfile2ToolStripMenuItem->Name = L"openfile2ToolStripMenuItem";
-			this->openfile2ToolStripMenuItem->Size = System::Drawing::Size(152, 26);
+			this->openfile2ToolStripMenuItem->Size = System::Drawing::Size(152, 22);
 			this->openfile2ToolStripMenuItem->Text = L"Openfile2";
 			this->openfile2ToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::openfile2ToolStripMenuItem_Click);
 			// 
@@ -371,9 +421,11 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->groupbox1->Font = (gcnew System::Drawing::Font(L"·L³n¥¿¶ÂÅé", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
 			this->groupbox1->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->groupbox1->Location = System::Drawing::Point(0, 30);
+			this->groupbox1->Location = System::Drawing::Point(0, 24);
+			this->groupbox1->Margin = System::Windows::Forms::Padding(2);
 			this->groupbox1->Name = L"groupbox1";
-			this->groupbox1->Size = System::Drawing::Size(137, 186);
+			this->groupbox1->Padding = System::Windows::Forms::Padding(2);
+			this->groupbox1->Size = System::Drawing::Size(103, 149);
 			this->groupbox1->TabIndex = 1;
 			this->groupbox1->TabStop = false;
 			this->groupbox1->Text = L"¦â±mÂà´«";
@@ -382,9 +434,9 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// 
 			this->toolStrip5->ImageScalingSize = System::Drawing::Size(20, 20);
 			this->toolStrip5->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->Btn_Bouncing_Ball });
-			this->toolStrip5->Location = System::Drawing::Point(3, 111);
+			this->toolStrip5->Location = System::Drawing::Point(2, 105);
 			this->toolStrip5->Name = L"toolStrip5";
-			this->toolStrip5->Size = System::Drawing::Size(131, 27);
+			this->toolStrip5->Size = System::Drawing::Size(99, 27);
 			this->toolStrip5->TabIndex = 4;
 			this->toolStrip5->Text = L"toolStrip5";
 			// 
@@ -393,7 +445,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->Btn_Bouncing_Ball->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Bouncing_Ball.Image")));
 			this->Btn_Bouncing_Ball->ImageTransparentColor = System::Drawing::Color::Magenta;
 			this->Btn_Bouncing_Ball->Name = L"Btn_Bouncing_Ball";
-			this->Btn_Bouncing_Ball->Size = System::Drawing::Size(78, 24);
+			this->Btn_Bouncing_Ball->Size = System::Drawing::Size(67, 24);
 			this->Btn_Bouncing_Ball->Text = L"¼u¤O²y";
 			this->Btn_Bouncing_Ball->Click += gcnew System::EventHandler(this, &MyForm::Btn_Bouncing_Ball_Click);
 			// 
@@ -404,9 +456,9 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 				this->Btn_Threshold_Binary,
 					this->Btn_Threshold_Binary_Inverse
 			});
-			this->toolStrip3->Location = System::Drawing::Point(3, 84);
+			this->toolStrip3->Location = System::Drawing::Point(2, 78);
 			this->toolStrip3->Name = L"toolStrip3";
-			this->toolStrip3->Size = System::Drawing::Size(131, 27);
+			this->toolStrip3->Size = System::Drawing::Size(99, 27);
 			this->toolStrip3->TabIndex = 2;
 			this->toolStrip3->Text = L"toolStrip3";
 			// 
@@ -415,7 +467,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->Btn_Threshold_Binary->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Threshold_Binary.Image")));
 			this->Btn_Threshold_Binary->ImageTransparentColor = System::Drawing::Color::Magenta;
 			this->Btn_Threshold_Binary->Name = L"Btn_Threshold_Binary";
-			this->Btn_Threshold_Binary->Size = System::Drawing::Size(78, 24);
+			this->Btn_Threshold_Binary->Size = System::Drawing::Size(67, 24);
 			this->Btn_Threshold_Binary->Text = L"¤G­È¤Æ";
 			this->Btn_Threshold_Binary->Click += gcnew System::EventHandler(this, &MyForm::Btn_Threshold_Binary_Click);
 			// 
@@ -425,7 +477,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->Btn_Threshold_Binary_Inverse->ImageTransparentColor = System::Drawing::Color::Magenta;
 			this->Btn_Threshold_Binary_Inverse->Name = L"Btn_Threshold_Binary_Inverse";
 			this->Btn_Threshold_Binary_Inverse->RightToLeft = System::Windows::Forms::RightToLeft::No;
-			this->Btn_Threshold_Binary_Inverse->Size = System::Drawing::Size(93, 24);
+			this->Btn_Threshold_Binary_Inverse->Size = System::Drawing::Size(79, 24);
 			this->Btn_Threshold_Binary_Inverse->Text = L"°f¤G­È¤Æ";
 			this->Btn_Threshold_Binary_Inverse->Click += gcnew System::EventHandler(this, &MyForm::Btn_Threshold_Binary_Inverse_Click_1);
 			// 
@@ -436,9 +488,9 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 				this->Btn_ToRed, this->Btn_ToGreen,
 					this->Btn_ToBlue, this->Btn_RGB_Inverse
 			});
-			this->toolStrip2->Location = System::Drawing::Point(3, 57);
+			this->toolStrip2->Location = System::Drawing::Point(2, 51);
 			this->toolStrip2->Name = L"toolStrip2";
-			this->toolStrip2->Size = System::Drawing::Size(131, 27);
+			this->toolStrip2->Size = System::Drawing::Size(99, 27);
 			this->toolStrip2->TabIndex = 1;
 			this->toolStrip2->Text = L"toolStrip2";
 			// 
@@ -461,7 +513,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 				static_cast<System::Byte>(136)));
 			this->Btn_ToGreen->ImageTransparentColor = System::Drawing::Color::Magenta;
 			this->Btn_ToGreen->Name = L"Btn_ToGreen";
-			this->Btn_ToGreen->Size = System::Drawing::Size(24, 24);
+			this->Btn_ToGreen->Size = System::Drawing::Size(23, 24);
 			this->Btn_ToGreen->Text = L"G";
 			this->Btn_ToGreen->ToolTipText = L"G";
 			this->Btn_ToGreen->Click += gcnew System::EventHandler(this, &MyForm::Btn_ToGreen_Click);
@@ -483,7 +535,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->Btn_RGB_Inverse->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_RGB_Inverse.Image")));
 			this->Btn_RGB_Inverse->ImageTransparentColor = System::Drawing::Color::Magenta;
 			this->Btn_RGB_Inverse->Name = L"Btn_RGB_Inverse";
-			this->Btn_RGB_Inverse->Size = System::Drawing::Size(78, 24);
+			this->Btn_RGB_Inverse->Size = System::Drawing::Size(67, 24);
 			this->Btn_RGB_Inverse->Text = L"°fRGB";
 			this->Btn_RGB_Inverse->Click += gcnew System::EventHandler(this, &MyForm::Btn_RGB_Inverse_Click);
 			// 
@@ -491,9 +543,9 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// 
 			this->toolStrip1->ImageScalingSize = System::Drawing::Size(20, 20);
 			this->toolStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) { this->Btn_Gray, this->Btn_Gray_Inverse });
-			this->toolStrip1->Location = System::Drawing::Point(3, 30);
+			this->toolStrip1->Location = System::Drawing::Point(2, 24);
 			this->toolStrip1->Name = L"toolStrip1";
-			this->toolStrip1->Size = System::Drawing::Size(131, 27);
+			this->toolStrip1->Size = System::Drawing::Size(99, 27);
 			this->toolStrip1->TabIndex = 0;
 			this->toolStrip1->Text = L"toolStrip1";
 			// 
@@ -502,7 +554,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->Btn_Gray->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Gray.Image")));
 			this->Btn_Gray->ImageTransparentColor = System::Drawing::Color::Magenta;
 			this->Btn_Gray->Name = L"Btn_Gray";
-			this->Btn_Gray->Size = System::Drawing::Size(63, 24);
+			this->Btn_Gray->Size = System::Drawing::Size(55, 24);
 			this->Btn_Gray->Text = L"¦Ç¶¥";
 			this->Btn_Gray->ToolTipText = L"¦Ç¶¥";
 			this->Btn_Gray->Click += gcnew System::EventHandler(this, &MyForm::Btn_Gray_Click);
@@ -512,7 +564,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->Btn_Gray_Inverse->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Gray_Inverse.Image")));
 			this->Btn_Gray_Inverse->ImageTransparentColor = System::Drawing::Color::Magenta;
 			this->Btn_Gray_Inverse->Name = L"Btn_Gray_Inverse";
-			this->Btn_Gray_Inverse->Size = System::Drawing::Size(78, 24);
+			this->Btn_Gray_Inverse->Size = System::Drawing::Size(67, 24);
 			this->Btn_Gray_Inverse->Text = L"°f¦Ç¶¥";
 			this->Btn_Gray_Inverse->ToolTipText = L"toolStripButton1";
 			this->Btn_Gray_Inverse->Click += gcnew System::EventHandler(this, &MyForm::Btn_Gray_Inverse_Click);
@@ -520,6 +572,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// pictureBox1
 			// 
 			this->pictureBox1->Location = System::Drawing::Point(0, 0);
+			this->pictureBox1->Margin = System::Windows::Forms::Padding(2);
 			this->pictureBox1->Name = L"pictureBox1";
 			this->pictureBox1->Size = System::Drawing::Size(700, 600);
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::AutoSize;
@@ -529,9 +582,10 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// 
 			// Exit
 			// 
-			this->Exit->Location = System::Drawing::Point(163, 3);
+			this->Exit->Location = System::Drawing::Point(122, 2);
+			this->Exit->Margin = System::Windows::Forms::Padding(2);
 			this->Exit->Name = L"Exit";
-			this->Exit->Size = System::Drawing::Size(75, 23);
+			this->Exit->Size = System::Drawing::Size(56, 18);
 			this->Exit->TabIndex = 3;
 			this->Exit->Text = L"Exit";
 			this->Exit->UseVisualStyleBackColor = true;
@@ -539,7 +593,8 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// 
 			// pictureBox2
 			// 
-			this->pictureBox2->Location = System::Drawing::Point(1004, 243);
+			this->pictureBox2->Location = System::Drawing::Point(753, 194);
+			this->pictureBox2->Margin = System::Windows::Forms::Padding(2);
 			this->pictureBox2->Name = L"pictureBox2";
 			this->pictureBox2->Size = System::Drawing::Size(100, 100);
 			this->pictureBox2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::AutoSize;
@@ -555,9 +610,11 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->groupBox2->Controls->Add(this->toolStrip6);
 			this->groupBox2->Font = (gcnew System::Drawing::Font(L"·L³n¥¿¶ÂÅé", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->groupBox2->Location = System::Drawing::Point(153, 32);
+			this->groupBox2->Location = System::Drawing::Point(115, 26);
+			this->groupBox2->Margin = System::Windows::Forms::Padding(2);
 			this->groupBox2->Name = L"groupBox2";
-			this->groupBox2->Size = System::Drawing::Size(164, 162);
+			this->groupBox2->Padding = System::Windows::Forms::Padding(2);
+			this->groupBox2->Size = System::Drawing::Size(123, 130);
 			this->groupBox2->TabIndex = 5;
 			this->groupBox2->TabStop = false;
 			this->groupBox2->Text = L"Ãè®g";
@@ -566,9 +623,9 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// 
 			this->toolStrip8->ImageScalingSize = System::Drawing::Size(20, 20);
 			this->toolStrip8->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->Btn_Diagonal_Flip });
-			this->toolStrip8->Location = System::Drawing::Point(3, 84);
+			this->toolStrip8->Location = System::Drawing::Point(2, 78);
 			this->toolStrip8->Name = L"toolStrip8";
-			this->toolStrip8->Size = System::Drawing::Size(158, 27);
+			this->toolStrip8->Size = System::Drawing::Size(119, 27);
 			this->toolStrip8->TabIndex = 2;
 			this->toolStrip8->Text = L"toolStrip8";
 			// 
@@ -577,7 +634,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->Btn_Diagonal_Flip->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Diagonal_Flip.Image")));
 			this->Btn_Diagonal_Flip->ImageTransparentColor = System::Drawing::Color::Magenta;
 			this->Btn_Diagonal_Flip->Name = L"Btn_Diagonal_Flip";
-			this->Btn_Diagonal_Flip->Size = System::Drawing::Size(93, 24);
+			this->Btn_Diagonal_Flip->Size = System::Drawing::Size(79, 24);
 			this->Btn_Diagonal_Flip->Text = L"¹ï¨¤Ãè®g";
 			this->Btn_Diagonal_Flip->Click += gcnew System::EventHandler(this, &MyForm::Btn_Diagonal_Flip_Click);
 			// 
@@ -585,9 +642,9 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// 
 			this->toolStrip7->ImageScalingSize = System::Drawing::Size(20, 20);
 			this->toolStrip7->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->Btn_Vertical_Flip });
-			this->toolStrip7->Location = System::Drawing::Point(3, 57);
+			this->toolStrip7->Location = System::Drawing::Point(2, 51);
 			this->toolStrip7->Name = L"toolStrip7";
-			this->toolStrip7->Size = System::Drawing::Size(158, 27);
+			this->toolStrip7->Size = System::Drawing::Size(119, 27);
 			this->toolStrip7->TabIndex = 1;
 			this->toolStrip7->Text = L"toolStrip7";
 			// 
@@ -596,7 +653,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->Btn_Vertical_Flip->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Vertical_Flip.Image")));
 			this->Btn_Vertical_Flip->ImageTransparentColor = System::Drawing::Color::Magenta;
 			this->Btn_Vertical_Flip->Name = L"Btn_Vertical_Flip";
-			this->Btn_Vertical_Flip->Size = System::Drawing::Size(93, 24);
+			this->Btn_Vertical_Flip->Size = System::Drawing::Size(79, 24);
 			this->Btn_Vertical_Flip->Text = L"««ª½Ãè®g";
 			this->Btn_Vertical_Flip->Click += gcnew System::EventHandler(this, &MyForm::Btn_Vertical_Flip_Click);
 			// 
@@ -604,9 +661,9 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// 
 			this->toolStrip6->ImageScalingSize = System::Drawing::Size(20, 20);
 			this->toolStrip6->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->Btn_Horizontal_Flip });
-			this->toolStrip6->Location = System::Drawing::Point(3, 30);
+			this->toolStrip6->Location = System::Drawing::Point(2, 24);
 			this->toolStrip6->Name = L"toolStrip6";
-			this->toolStrip6->Size = System::Drawing::Size(158, 27);
+			this->toolStrip6->Size = System::Drawing::Size(119, 27);
 			this->toolStrip6->TabIndex = 0;
 			this->toolStrip6->Text = L"toolStrip6";
 			// 
@@ -615,32 +672,115 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->Btn_Horizontal_Flip->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Horizontal_Flip.Image")));
 			this->Btn_Horizontal_Flip->ImageTransparentColor = System::Drawing::Color::Magenta;
 			this->Btn_Horizontal_Flip->Name = L"Btn_Horizontal_Flip";
-			this->Btn_Horizontal_Flip->Size = System::Drawing::Size(93, 24);
+			this->Btn_Horizontal_Flip->Size = System::Drawing::Size(79, 24);
 			this->Btn_Horizontal_Flip->Text = L"¤ô¥­Ãè®g";
 			this->Btn_Horizontal_Flip->Click += gcnew System::EventHandler(this, &MyForm::Btn_Horizontal_Flip_Click);
 			// 
 			// groupBox3
 			// 
+			this->groupBox3->Controls->Add(this->toolStrip19);
+			this->groupBox3->Controls->Add(this->toolStrip18);
 			this->groupBox3->Controls->Add(this->label2);
 			this->groupBox3->Controls->Add(this->toolStrip10);
 			this->groupBox3->Controls->Add(this->toolStrip9);
 			this->groupBox3->Font = (gcnew System::Drawing::Font(L"·L³n¥¿¶ÂÅé", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->groupBox3->Location = System::Drawing::Point(336, 38);
+			this->groupBox3->Location = System::Drawing::Point(242, 30);
+			this->groupBox3->Margin = System::Windows::Forms::Padding(2);
 			this->groupBox3->Name = L"groupBox3";
-			this->groupBox3->Size = System::Drawing::Size(137, 86);
+			this->groupBox3->Padding = System::Windows::Forms::Padding(2);
+			this->groupBox3->Size = System::Drawing::Size(113, 120);
 			this->groupBox3->TabIndex = 6;
 			this->groupBox3->TabStop = false;
 			this->groupBox3->Text = L"ÁY©ñ";
+			// 
+			// toolStrip19
+			// 
+			this->toolStrip19->ImageScalingSize = System::Drawing::Size(20, 20);
+			this->toolStrip19->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
+				this->toolStripButton2,
+					this->Btn_Decimation_Reduce, this->Btn_Average_Reduce
+			});
+			this->toolStrip19->Location = System::Drawing::Point(2, 103);
+			this->toolStrip19->Name = L"toolStrip19";
+			this->toolStrip19->Size = System::Drawing::Size(109, 27);
+			this->toolStrip19->TabIndex = 4;
+			this->toolStrip19->Text = L"toolStrip19";
+			// 
+			// toolStripButton2
+			// 
+			this->toolStripButton2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"toolStripButton2.Image")));
+			this->toolStripButton2->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->toolStripButton2->Name = L"toolStripButton2";
+			this->toolStripButton2->Size = System::Drawing::Size(55, 24);
+			this->toolStripButton2->Text = L"ÁY¤p";
+			// 
+			// Btn_Decimation_Reduce
+			// 
+			this->Btn_Decimation_Reduce->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Decimation_Reduce.Image")));
+			this->Btn_Decimation_Reduce->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->Btn_Decimation_Reduce->Name = L"Btn_Decimation_Reduce";
+			this->Btn_Decimation_Reduce->Size = System::Drawing::Size(79, 24);
+			this->Btn_Decimation_Reduce->Text = L"§R¥hÁY¤p";
+			this->Btn_Decimation_Reduce->Click += gcnew System::EventHandler(this, &MyForm::Btn_Decimation_Reduce_Click);
+			// 
+			// Btn_Average_Reduce
+			// 
+			this->Btn_Average_Reduce->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Average_Reduce.Image")));
+			this->Btn_Average_Reduce->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->Btn_Average_Reduce->Name = L"Btn_Average_Reduce";
+			this->Btn_Average_Reduce->Size = System::Drawing::Size(79, 24);
+			this->Btn_Average_Reduce->Text = L"¥­§¡ÁY¤p";
+			this->Btn_Average_Reduce->Click += gcnew System::EventHandler(this, &MyForm::Btn_Average_Reduce_Click);
+			// 
+			// toolStrip18
+			// 
+			this->toolStrip18->ImageScalingSize = System::Drawing::Size(20, 20);
+			this->toolStrip18->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
+				this->toolStripButton1,
+					this->Btn_Duplication_Enlarge, this->Btn_Interpolation_Enlarge
+			});
+			this->toolStrip18->Location = System::Drawing::Point(2, 76);
+			this->toolStrip18->Name = L"toolStrip18";
+			this->toolStrip18->Size = System::Drawing::Size(109, 27);
+			this->toolStrip18->TabIndex = 3;
+			this->toolStrip18->Text = L"toolStrip18";
+			// 
+			// toolStripButton1
+			// 
+			this->toolStripButton1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"toolStripButton1.Image")));
+			this->toolStripButton1->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->toolStripButton1->Name = L"toolStripButton1";
+			this->toolStripButton1->Size = System::Drawing::Size(55, 24);
+			this->toolStripButton1->Text = L"©ñ¤j";
+			// 
+			// Btn_Duplication_Enlarge
+			// 
+			this->Btn_Duplication_Enlarge->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Duplication_Enlarge.Image")));
+			this->Btn_Duplication_Enlarge->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->Btn_Duplication_Enlarge->Name = L"Btn_Duplication_Enlarge";
+			this->Btn_Duplication_Enlarge->Size = System::Drawing::Size(79, 24);
+			this->Btn_Duplication_Enlarge->Text = L"½Æ»s©ñ¤j";
+			this->Btn_Duplication_Enlarge->Click += gcnew System::EventHandler(this, &MyForm::Btn_Duplication_Enlarge_Click);
+			// 
+			// Btn_Interpolation_Enlarge
+			// 
+			this->Btn_Interpolation_Enlarge->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Interpolation_Enlarge.Image")));
+			this->Btn_Interpolation_Enlarge->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->Btn_Interpolation_Enlarge->Name = L"Btn_Interpolation_Enlarge";
+			this->Btn_Interpolation_Enlarge->Size = System::Drawing::Size(79, 24);
+			this->Btn_Interpolation_Enlarge->Text = L"¤º´¡©ñ¤j";
+			this->Btn_Interpolation_Enlarge->Click += gcnew System::EventHandler(this, &MyForm::Btn_Interpolation_Enlarge_Click);
 			// 
 			// label2
 			// 
 			this->label2->AutoSize = true;
 			this->label2->Font = (gcnew System::Drawing::Font(L"·L³n¥¿¶ÂÅé", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->label2->Location = System::Drawing::Point(16, 35);
+			this->label2->Location = System::Drawing::Point(12, 28);
+			this->label2->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(69, 19);
+			this->label2->Size = System::Drawing::Size(56, 16);
 			this->label2->TabIndex = 2;
 			this->label2->Text = L"ÁY©ñ­¿²v";
 			// 
@@ -648,9 +788,9 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// 
 			this->toolStrip10->ImageScalingSize = System::Drawing::Size(20, 20);
 			this->toolStrip10->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->Btn_Zoom });
-			this->toolStrip10->Location = System::Drawing::Point(3, 57);
+			this->toolStrip10->Location = System::Drawing::Point(2, 49);
 			this->toolStrip10->Name = L"toolStrip10";
-			this->toolStrip10->Size = System::Drawing::Size(131, 27);
+			this->toolStrip10->Size = System::Drawing::Size(109, 27);
 			this->toolStrip10->TabIndex = 1;
 			this->toolStrip10->Text = L"toolStrip10";
 			// 
@@ -659,7 +799,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->Btn_Zoom->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Zoom.Image")));
 			this->Btn_Zoom->ImageTransparentColor = System::Drawing::Color::Magenta;
 			this->Btn_Zoom->Name = L"Btn_Zoom";
-			this->Btn_Zoom->Size = System::Drawing::Size(93, 24);
+			this->Btn_Zoom->Size = System::Drawing::Size(79, 24);
 			this->Btn_Zoom->Text = L"½Æ»sÁY©ñ";
 			this->Btn_Zoom->Click += gcnew System::EventHandler(this, &MyForm::Btn_Zoom_Click);
 			// 
@@ -667,9 +807,9 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// 
 			this->toolStrip9->ImageScalingSize = System::Drawing::Size(20, 20);
 			this->toolStrip9->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->Textbox_ZoomRate });
-			this->toolStrip9->Location = System::Drawing::Point(3, 30);
+			this->toolStrip9->Location = System::Drawing::Point(2, 24);
 			this->toolStrip9->Name = L"toolStrip9";
-			this->toolStrip9->Size = System::Drawing::Size(131, 27);
+			this->toolStrip9->Size = System::Drawing::Size(109, 25);
 			this->toolStrip9->TabIndex = 0;
 			this->toolStrip9->Text = L"toolStrip9";
 			// 
@@ -677,7 +817,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// 
 			this->Textbox_ZoomRate->Alignment = System::Windows::Forms::ToolStripItemAlignment::Right;
 			this->Textbox_ZoomRate->Name = L"Textbox_ZoomRate";
-			this->Textbox_ZoomRate->Size = System::Drawing::Size(40, 27);
+			this->Textbox_ZoomRate->Size = System::Drawing::Size(31, 25);
 			this->Textbox_ZoomRate->Text = L"1";
 			this->Textbox_ZoomRate->TextBoxTextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
@@ -689,9 +829,11 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->groupBox4->Controls->Add(this->Btn_None_Draw);
 			this->groupBox4->Font = (gcnew System::Drawing::Font(L"·L³n¥¿¶ÂÅé", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->groupBox4->Location = System::Drawing::Point(479, 38);
+			this->groupBox4->Location = System::Drawing::Point(359, 30);
+			this->groupBox4->Margin = System::Windows::Forms::Padding(2);
 			this->groupBox4->Name = L"groupBox4";
-			this->groupBox4->Size = System::Drawing::Size(153, 156);
+			this->groupBox4->Padding = System::Windows::Forms::Padding(2);
+			this->groupBox4->Size = System::Drawing::Size(115, 125);
 			this->groupBox4->TabIndex = 7;
 			this->groupBox4->TabStop = false;
 			this->groupBox4->Text = L"Ã¸¹Ï¤u¨ã";
@@ -699,11 +841,11 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// Btn_Rectangle
 			// 
 			this->Btn_Rectangle->AutoSize = true;
-			this->Btn_Rectangle->Location = System::Drawing::Point(11, 121);
+			this->Btn_Rectangle->Location = System::Drawing::Point(8, 97);
+			this->Btn_Rectangle->Margin = System::Windows::Forms::Padding(2);
 			this->Btn_Rectangle->Name = L"Btn_Rectangle";
-			this->Btn_Rectangle->Size = System::Drawing::Size(73, 29);
+			this->Btn_Rectangle->Size = System::Drawing::Size(59, 24);
 			this->Btn_Rectangle->TabIndex = 3;
-			this->Btn_Rectangle->TabStop = true;
 			this->Btn_Rectangle->Text = L"¯x§Î";
 			this->Btn_Rectangle->UseVisualStyleBackColor = true;
 			this->Btn_Rectangle->CheckedChanged += gcnew System::EventHandler(this, &MyForm::Btn_Rectangle_CheckedChanged);
@@ -711,11 +853,11 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// Btn_Circle
 			// 
 			this->Btn_Circle->AutoSize = true;
-			this->Btn_Circle->Location = System::Drawing::Point(11, 92);
+			this->Btn_Circle->Location = System::Drawing::Point(8, 74);
+			this->Btn_Circle->Margin = System::Windows::Forms::Padding(2);
 			this->Btn_Circle->Name = L"Btn_Circle";
-			this->Btn_Circle->Size = System::Drawing::Size(73, 29);
+			this->Btn_Circle->Size = System::Drawing::Size(59, 24);
 			this->Btn_Circle->TabIndex = 2;
-			this->Btn_Circle->TabStop = true;
 			this->Btn_Circle->Text = L"¶ê§Î";
 			this->Btn_Circle->UseVisualStyleBackColor = true;
 			this->Btn_Circle->CheckedChanged += gcnew System::EventHandler(this, &MyForm::Btn_Circle_CheckedChanged);
@@ -723,11 +865,11 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// Btn_Line
 			// 
 			this->Btn_Line->AutoSize = true;
-			this->Btn_Line->Location = System::Drawing::Point(11, 57);
+			this->Btn_Line->Location = System::Drawing::Point(8, 46);
+			this->Btn_Line->Margin = System::Windows::Forms::Padding(2);
 			this->Btn_Line->Name = L"Btn_Line";
-			this->Btn_Line->Size = System::Drawing::Size(73, 29);
+			this->Btn_Line->Size = System::Drawing::Size(59, 24);
 			this->Btn_Line->TabIndex = 1;
-			this->Btn_Line->TabStop = true;
 			this->Btn_Line->Text = L"ª½½u";
 			this->Btn_Line->UseVisualStyleBackColor = true;
 			this->Btn_Line->CheckedChanged += gcnew System::EventHandler(this, &MyForm::Btn_Line_CheckedChanged);
@@ -735,9 +877,11 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// Btn_None_Draw
 			// 
 			this->Btn_None_Draw->AutoSize = true;
-			this->Btn_None_Draw->Location = System::Drawing::Point(11, 32);
+			this->Btn_None_Draw->Checked = true;
+			this->Btn_None_Draw->Location = System::Drawing::Point(8, 26);
+			this->Btn_None_Draw->Margin = System::Windows::Forms::Padding(2);
 			this->Btn_None_Draw->Name = L"Btn_None_Draw";
-			this->Btn_None_Draw->Size = System::Drawing::Size(53, 29);
+			this->Btn_None_Draw->Size = System::Drawing::Size(43, 24);
 			this->Btn_None_Draw->TabIndex = 0;
 			this->Btn_None_Draw->TabStop = true;
 			this->Btn_None_Draw->Text = L"µL";
@@ -749,9 +893,10 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->label1->AutoSize = true;
 			this->label1->Font = (gcnew System::Drawing::Font(L"·L³n¥¿¶ÂÅé", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->label1->Location = System::Drawing::Point(149, 200);
+			this->label1->Location = System::Drawing::Point(112, 160);
+			this->label1->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(22, 19);
+			this->label1->Size = System::Drawing::Size(19, 16);
 			this->label1->TabIndex = 8;
 			this->label1->Text = L"X:";
 			// 
@@ -760,9 +905,10 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->Pos_x->AutoSize = true;
 			this->Pos_x->Font = (gcnew System::Drawing::Font(L"·L³n¥¿¶ÂÅé", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->Pos_x->Location = System::Drawing::Point(177, 200);
+			this->Pos_x->Location = System::Drawing::Point(133, 160);
+			this->Pos_x->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->Pos_x->Name = L"Pos_x";
-			this->Pos_x->Size = System::Drawing::Size(51, 19);
+			this->Pos_x->Size = System::Drawing::Size(43, 16);
 			this->Pos_x->TabIndex = 9;
 			this->Pos_x->Text = L"label2";
 			// 
@@ -771,9 +917,10 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->label3->AutoSize = true;
 			this->label3->Font = (gcnew System::Drawing::Font(L"·L³n¥¿¶ÂÅé", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->label3->Location = System::Drawing::Point(270, 200);
+			this->label3->Location = System::Drawing::Point(202, 160);
+			this->label3->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(21, 19);
+			this->label3->Size = System::Drawing::Size(18, 16);
 			this->label3->TabIndex = 10;
 			this->label3->Text = L"Y:";
 			// 
@@ -782,9 +929,10 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->Pos_y->AutoSize = true;
 			this->Pos_y->Font = (gcnew System::Drawing::Font(L"·L³n¥¿¶ÂÅé", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->Pos_y->Location = System::Drawing::Point(297, 200);
+			this->Pos_y->Location = System::Drawing::Point(223, 160);
+			this->Pos_y->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->Pos_y->Name = L"Pos_y";
-			this->Pos_y->Size = System::Drawing::Size(51, 19);
+			this->Pos_y->Size = System::Drawing::Size(43, 16);
 			this->Pos_y->TabIndex = 11;
 			this->Pos_y->Text = L"label4";
 			// 
@@ -793,9 +941,10 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->label5->AutoSize = true;
 			this->label5->Font = (gcnew System::Drawing::Font(L"·L³n¥¿¶ÂÅé", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->label5->Location = System::Drawing::Point(395, 200);
+			this->label5->Location = System::Drawing::Point(296, 160);
+			this->label5->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(42, 19);
+			this->label5->Size = System::Drawing::Size(35, 16);
 			this->label5->TabIndex = 12;
 			this->label5->Text = L"RGB:";
 			// 
@@ -804,17 +953,19 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->Pos_RGBvalue->AutoSize = true;
 			this->Pos_RGBvalue->Font = (gcnew System::Drawing::Font(L"·L³n¥¿¶ÂÅé", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->Pos_RGBvalue->Location = System::Drawing::Point(443, 200);
+			this->Pos_RGBvalue->Location = System::Drawing::Point(332, 160);
+			this->Pos_RGBvalue->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->Pos_RGBvalue->Name = L"Pos_RGBvalue";
-			this->Pos_RGBvalue->Size = System::Drawing::Size(51, 19);
+			this->Pos_RGBvalue->Size = System::Drawing::Size(43, 16);
 			this->Pos_RGBvalue->TabIndex = 13;
 			this->Pos_RGBvalue->Text = L"label6";
 			// 
 			// Btn_Reset
 			// 
-			this->Btn_Reset->Location = System::Drawing::Point(78, 4);
+			this->Btn_Reset->Location = System::Drawing::Point(58, 3);
+			this->Btn_Reset->Margin = System::Windows::Forms::Padding(2);
 			this->Btn_Reset->Name = L"Btn_Reset";
-			this->Btn_Reset->Size = System::Drawing::Size(75, 23);
+			this->Btn_Reset->Size = System::Drawing::Size(56, 18);
 			this->Btn_Reset->TabIndex = 17;
 			this->Btn_Reset->Text = L"Reset";
 			this->Btn_Reset->UseVisualStyleBackColor = true;
@@ -824,9 +975,11 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// 
 			this->groupBox5->Font = (gcnew System::Drawing::Font(L"·L³n¥¿¶ÂÅé", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->groupBox5->Location = System::Drawing::Point(638, 32);
+			this->groupBox5->Location = System::Drawing::Point(478, 26);
+			this->groupBox5->Margin = System::Windows::Forms::Padding(2);
 			this->groupBox5->Name = L"groupBox5";
-			this->groupBox5->Size = System::Drawing::Size(200, 100);
+			this->groupBox5->Padding = System::Windows::Forms::Padding(2);
+			this->groupBox5->Size = System::Drawing::Size(140, 80);
 			this->groupBox5->TabIndex = 18;
 			this->groupBox5->TabStop = false;
 			this->groupBox5->Text = L"±ÛÂà";
@@ -835,19 +988,21 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// 
 			this->tabControl1->Controls->Add(this->tabPage1);
 			this->tabControl1->Controls->Add(this->tabPage2);
-			this->tabControl1->Location = System::Drawing::Point(3, 222);
+			this->tabControl1->Location = System::Drawing::Point(2, 178);
+			this->tabControl1->Margin = System::Windows::Forms::Padding(2);
 			this->tabControl1->Name = L"tabControl1";
 			this->tabControl1->SelectedIndex = 0;
-			this->tabControl1->Size = System::Drawing::Size(900, 700);
+			this->tabControl1->Size = System::Drawing::Size(675, 560);
 			this->tabControl1->TabIndex = 19;
 			// 
 			// tabPage1
 			// 
 			this->tabPage1->Controls->Add(this->pictureBox1);
-			this->tabPage1->Location = System::Drawing::Point(4, 25);
+			this->tabPage1->Location = System::Drawing::Point(4, 22);
+			this->tabPage1->Margin = System::Windows::Forms::Padding(2);
 			this->tabPage1->Name = L"tabPage1";
-			this->tabPage1->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage1->Size = System::Drawing::Size(892, 671);
+			this->tabPage1->Padding = System::Windows::Forms::Padding(2);
+			this->tabPage1->Size = System::Drawing::Size(667, 534);
 			this->tabPage1->TabIndex = 0;
 			this->tabPage1->Text = L"tabPage1";
 			this->tabPage1->UseVisualStyleBackColor = true;
@@ -855,51 +1010,77 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// tabPage2
 			// 
 			this->tabPage2->Controls->Add(this->pictureBox3);
-			this->tabPage2->Location = System::Drawing::Point(4, 25);
+			this->tabPage2->Location = System::Drawing::Point(4, 22);
+			this->tabPage2->Margin = System::Windows::Forms::Padding(2);
 			this->tabPage2->Name = L"tabPage2";
-			this->tabPage2->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage2->Size = System::Drawing::Size(892, 671);
+			this->tabPage2->Padding = System::Windows::Forms::Padding(2);
+			this->tabPage2->Size = System::Drawing::Size(667, 534);
 			this->tabPage2->TabIndex = 1;
 			this->tabPage2->Text = L"tabPage2";
 			this->tabPage2->UseVisualStyleBackColor = true;
 			// 
 			// pictureBox3
 			// 
-			this->pictureBox3->Location = System::Drawing::Point(7, 18);
+			this->pictureBox3->Location = System::Drawing::Point(5, 14);
+			this->pictureBox3->Margin = System::Windows::Forms::Padding(2);
 			this->pictureBox3->Name = L"pictureBox3";
-			this->pictureBox3->Size = System::Drawing::Size(520, 360);
+			this->pictureBox3->Size = System::Drawing::Size(390, 288);
 			this->pictureBox3->TabIndex = 0;
 			this->pictureBox3->TabStop = false;
 			// 
 			// groupBox6
 			// 
+			this->groupBox6->Controls->Add(this->toolStrip17);
 			this->groupBox6->Controls->Add(this->label4);
 			this->groupBox6->Controls->Add(this->overlapping_trackbar);
 			this->groupBox6->Controls->Add(this->toolStrip4);
 			this->groupBox6->Font = (gcnew System::Drawing::Font(L"·L³n¥¿¶ÂÅé", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->groupBox6->Location = System::Drawing::Point(830, 31);
+			this->groupBox6->Location = System::Drawing::Point(611, 25);
+			this->groupBox6->Margin = System::Windows::Forms::Padding(2);
 			this->groupBox6->Name = L"groupBox6";
-			this->groupBox6->Size = System::Drawing::Size(139, 137);
+			this->groupBox6->Padding = System::Windows::Forms::Padding(2);
+			this->groupBox6->Size = System::Drawing::Size(115, 140);
 			this->groupBox6->TabIndex = 20;
 			this->groupBox6->TabStop = false;
 			this->groupBox6->Text = L"³z©ú«×";
 			// 
+			// toolStrip17
+			// 
+			this->toolStrip17->Dock = System::Windows::Forms::DockStyle::None;
+			this->toolStrip17->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->Btn_Subtracting });
+			this->toolStrip17->Location = System::Drawing::Point(9, 110);
+			this->toolStrip17->Name = L"toolStrip17";
+			this->toolStrip17->Size = System::Drawing::Size(87, 25);
+			this->toolStrip17->TabIndex = 22;
+			this->toolStrip17->Text = L"toolStrip17";
+			// 
+			// Btn_Subtracting
+			// 
+			this->Btn_Subtracting->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Subtracting.Image")));
+			this->Btn_Subtracting->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->Btn_Subtracting->Name = L"Btn_Subtracting";
+			this->Btn_Subtracting->Size = System::Drawing::Size(75, 22);
+			this->Btn_Subtracting->Text = L"¼v¹³¬Û´î";
+			this->Btn_Subtracting->Click += gcnew System::EventHandler(this, &MyForm::Btn_Subtracting_Click);
+			// 
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(22, 109);
+			this->label4->Location = System::Drawing::Point(16, 87);
+			this->label4->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(69, 25);
+			this->label4->Size = System::Drawing::Size(54, 20);
 			this->label4->TabIndex = 21;
 			this->label4->Text = L"label4";
 			// 
 			// overlapping_trackbar
 			// 
-			this->overlapping_trackbar->Location = System::Drawing::Point(8, 73);
+			this->overlapping_trackbar->Location = System::Drawing::Point(6, 58);
+			this->overlapping_trackbar->Margin = System::Windows::Forms::Padding(2);
 			this->overlapping_trackbar->Maximum = 100;
 			this->overlapping_trackbar->Name = L"overlapping_trackbar";
-			this->overlapping_trackbar->Size = System::Drawing::Size(104, 56);
+			this->overlapping_trackbar->Size = System::Drawing::Size(85, 45);
 			this->overlapping_trackbar->TabIndex = 1;
 			this->overlapping_trackbar->Visible = false;
 			this->overlapping_trackbar->Scroll += gcnew System::EventHandler(this, &MyForm::overlapping_trackbar_Scroll);
@@ -907,21 +1088,21 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// toolStrip4
 			// 
 			this->toolStrip4->ImageScalingSize = System::Drawing::Size(20, 20);
-			this->toolStrip4->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->Btn_overlapping });
-			this->toolStrip4->Location = System::Drawing::Point(3, 30);
+			this->toolStrip4->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->Btn_Overlapping });
+			this->toolStrip4->Location = System::Drawing::Point(2, 24);
 			this->toolStrip4->Name = L"toolStrip4";
-			this->toolStrip4->Size = System::Drawing::Size(133, 27);
+			this->toolStrip4->Size = System::Drawing::Size(111, 27);
 			this->toolStrip4->TabIndex = 0;
 			this->toolStrip4->Text = L"toolStrip4";
 			// 
-			// Btn_overlapping
+			// Btn_Overlapping
 			// 
-			this->Btn_overlapping->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_overlapping.Image")));
-			this->Btn_overlapping->ImageTransparentColor = System::Drawing::Color::Magenta;
-			this->Btn_overlapping->Name = L"Btn_overlapping";
-			this->Btn_overlapping->Size = System::Drawing::Size(93, 24);
-			this->Btn_overlapping->Text = L"¼v¹³¥æÅ|";
-			this->Btn_overlapping->Click += gcnew System::EventHandler(this, &MyForm::Btn_overlapping_Click);
+			this->Btn_Overlapping->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Overlapping.Image")));
+			this->Btn_Overlapping->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->Btn_Overlapping->Name = L"Btn_Overlapping";
+			this->Btn_Overlapping->Size = System::Drawing::Size(79, 24);
+			this->Btn_Overlapping->Text = L"¼v¹³¥æÅ|";
+			this->Btn_Overlapping->Click += gcnew System::EventHandler(this, &MyForm::Btn_Overlapping_Click);
 			// 
 			// groupBox7
 			// 
@@ -932,9 +1113,11 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->groupBox7->Controls->Add(this->toolStrip11);
 			this->groupBox7->Font = (gcnew System::Drawing::Font(L"·L³n¥¿¶ÂÅé", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->groupBox7->Location = System::Drawing::Point(975, 30);
+			this->groupBox7->Location = System::Drawing::Point(731, 24);
+			this->groupBox7->Margin = System::Windows::Forms::Padding(2);
 			this->groupBox7->Name = L"groupBox7";
-			this->groupBox7->Size = System::Drawing::Size(167, 207);
+			this->groupBox7->Padding = System::Windows::Forms::Padding(2);
+			this->groupBox7->Size = System::Drawing::Size(136, 166);
 			this->groupBox7->TabIndex = 21;
 			this->groupBox7->TabStop = false;
 			this->groupBox7->Text = L"ª½¤è¹Ï";
@@ -943,9 +1126,9 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// 
 			this->toolStrip16->ImageScalingSize = System::Drawing::Size(20, 20);
 			this->toolStrip16->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->Btn_Otsu_Histogram });
-			this->toolStrip16->Location = System::Drawing::Point(3, 138);
+			this->toolStrip16->Location = System::Drawing::Point(2, 132);
 			this->toolStrip16->Name = L"toolStrip16";
-			this->toolStrip16->Size = System::Drawing::Size(161, 27);
+			this->toolStrip16->Size = System::Drawing::Size(132, 27);
 			this->toolStrip16->TabIndex = 4;
 			this->toolStrip16->Text = L"toolStrip16";
 			// 
@@ -954,34 +1137,36 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->Btn_Otsu_Histogram->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Otsu_Histogram.Image")));
 			this->Btn_Otsu_Histogram->ImageTransparentColor = System::Drawing::Color::Magenta;
 			this->Btn_Otsu_Histogram->Name = L"Btn_Otsu_Histogram";
-			this->Btn_Otsu_Histogram->Size = System::Drawing::Size(115, 24);
+			this->Btn_Otsu_Histogram->Size = System::Drawing::Size(96, 24);
 			this->Btn_Otsu_Histogram->Text = L"O\'tsuª½¤è¹Ï";
+			this->Btn_Otsu_Histogram->Click += gcnew System::EventHandler(this, &MyForm::Btn_Otsu_Histogram_Click);
 			// 
 			// toolStrip14
 			// 
 			this->toolStrip14->ImageScalingSize = System::Drawing::Size(20, 20);
-			this->toolStrip14->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->toolStripButton4 });
-			this->toolStrip14->Location = System::Drawing::Point(3, 111);
+			this->toolStrip14->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->Specification_Histogram });
+			this->toolStrip14->Location = System::Drawing::Point(2, 105);
 			this->toolStrip14->Name = L"toolStrip14";
-			this->toolStrip14->Size = System::Drawing::Size(161, 27);
+			this->toolStrip14->Size = System::Drawing::Size(132, 27);
 			this->toolStrip14->TabIndex = 3;
 			this->toolStrip14->Text = L"toolStrip14";
 			// 
-			// toolStripButton4
+			// Specification_Histogram
 			// 
-			this->toolStripButton4->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"toolStripButton4.Image")));
-			this->toolStripButton4->ImageTransparentColor = System::Drawing::Color::Magenta;
-			this->toolStripButton4->Name = L"toolStripButton4";
-			this->toolStripButton4->Size = System::Drawing::Size(123, 24);
-			this->toolStripButton4->Text = L"ª½¤è¹Ï³W©w¤Æ";
+			this->Specification_Histogram->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Specification_Histogram.Image")));
+			this->Specification_Histogram->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->Specification_Histogram->Name = L"Specification_Histogram";
+			this->Specification_Histogram->Size = System::Drawing::Size(103, 24);
+			this->Specification_Histogram->Text = L"ª½¤è¹Ï³W©w¤Æ";
+			this->Specification_Histogram->Click += gcnew System::EventHandler(this, &MyForm::Specification_Histogram_Click);
 			// 
 			// toolStrip13
 			// 
 			this->toolStrip13->ImageScalingSize = System::Drawing::Size(20, 20);
 			this->toolStrip13->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->Equalization_Histogram });
-			this->toolStrip13->Location = System::Drawing::Point(3, 84);
+			this->toolStrip13->Location = System::Drawing::Point(2, 78);
 			this->toolStrip13->Name = L"toolStrip13";
-			this->toolStrip13->Size = System::Drawing::Size(161, 27);
+			this->toolStrip13->Size = System::Drawing::Size(132, 27);
 			this->toolStrip13->TabIndex = 2;
 			this->toolStrip13->Text = L"toolStrip13";
 			// 
@@ -990,7 +1175,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->Equalization_Histogram->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Equalization_Histogram.Image")));
 			this->Equalization_Histogram->ImageTransparentColor = System::Drawing::Color::Magenta;
 			this->Equalization_Histogram->Name = L"Equalization_Histogram";
-			this->Equalization_Histogram->Size = System::Drawing::Size(108, 24);
+			this->Equalization_Histogram->Size = System::Drawing::Size(91, 24);
 			this->Equalization_Histogram->Text = L"ª½¤è¹Ïµ¥¤Æ";
 			this->Equalization_Histogram->Click += gcnew System::EventHandler(this, &MyForm::Equalization_Histogram_Click);
 			// 
@@ -998,9 +1183,9 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// 
 			this->toolStrip12->ImageScalingSize = System::Drawing::Size(20, 20);
 			this->toolStrip12->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->Btn_RGB_Histogram });
-			this->toolStrip12->Location = System::Drawing::Point(3, 57);
+			this->toolStrip12->Location = System::Drawing::Point(2, 51);
 			this->toolStrip12->Name = L"toolStrip12";
-			this->toolStrip12->Size = System::Drawing::Size(161, 27);
+			this->toolStrip12->Size = System::Drawing::Size(132, 27);
 			this->toolStrip12->TabIndex = 1;
 			this->toolStrip12->Text = L"toolStrip12";
 			// 
@@ -1009,7 +1194,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->Btn_RGB_Histogram->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_RGB_Histogram.Image")));
 			this->Btn_RGB_Histogram->ImageTransparentColor = System::Drawing::Color::Magenta;
 			this->Btn_RGB_Histogram->Name = L"Btn_RGB_Histogram";
-			this->Btn_RGB_Histogram->Size = System::Drawing::Size(108, 24);
+			this->Btn_RGB_Histogram->Size = System::Drawing::Size(91, 24);
 			this->Btn_RGB_Histogram->Text = L"¤T¦âª½¤è¹Ï";
 			this->Btn_RGB_Histogram->Click += gcnew System::EventHandler(this, &MyForm::Btn_RGB_Histogram_Click);
 			// 
@@ -1017,9 +1202,9 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			// 
 			this->toolStrip11->ImageScalingSize = System::Drawing::Size(20, 20);
 			this->toolStrip11->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->Btn_Gray_Histogran });
-			this->toolStrip11->Location = System::Drawing::Point(3, 30);
+			this->toolStrip11->Location = System::Drawing::Point(2, 24);
 			this->toolStrip11->Name = L"toolStrip11";
-			this->toolStrip11->Size = System::Drawing::Size(161, 27);
+			this->toolStrip11->Size = System::Drawing::Size(132, 27);
 			this->toolStrip11->TabIndex = 0;
 			this->toolStrip11->Text = L"toolStrip11";
 			// 
@@ -1028,7 +1213,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->Btn_Gray_Histogran->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Gray_Histogran.Image")));
 			this->Btn_Gray_Histogran->ImageTransparentColor = System::Drawing::Color::Magenta;
 			this->Btn_Gray_Histogran->Name = L"Btn_Gray_Histogran";
-			this->Btn_Gray_Histogran->Size = System::Drawing::Size(108, 24);
+			this->Btn_Gray_Histogran->Size = System::Drawing::Size(91, 24);
 			this->Btn_Gray_Histogran->Text = L"¦Ç¶¥ª½¤è¹Ï";
 			this->Btn_Gray_Histogran->Click += gcnew System::EventHandler(this, &MyForm::Btn_Gray_Histogran_Click);
 			// 
@@ -1038,9 +1223,11 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->groupBox8->Controls->Add(this->Threshold_value);
 			this->groupBox8->Font = (gcnew System::Drawing::Font(L"·L³n¥¿¶ÂÅé", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->groupBox8->Location = System::Drawing::Point(1161, 38);
+			this->groupBox8->Location = System::Drawing::Point(871, 30);
+			this->groupBox8->Margin = System::Windows::Forms::Padding(2);
 			this->groupBox8->Name = L"groupBox8";
-			this->groupBox8->Size = System::Drawing::Size(154, 130);
+			this->groupBox8->Padding = System::Windows::Forms::Padding(2);
+			this->groupBox8->Size = System::Drawing::Size(116, 104);
 			this->groupBox8->TabIndex = 22;
 			this->groupBox8->TabStop = false;
 			this->groupBox8->Text = L"»Ö­È";
@@ -1050,9 +1237,9 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->toolStrip15->Dock = System::Windows::Forms::DockStyle::None;
 			this->toolStrip15->ImageScalingSize = System::Drawing::Size(20, 20);
 			this->toolStrip15->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->Btn_Otsu });
-			this->toolStrip15->Location = System::Drawing::Point(12, 67);
+			this->toolStrip15->Location = System::Drawing::Point(9, 54);
 			this->toolStrip15->Name = L"toolStrip15";
-			this->toolStrip15->Size = System::Drawing::Size(82, 27);
+			this->toolStrip15->Size = System::Drawing::Size(72, 27);
 			this->toolStrip15->TabIndex = 1;
 			this->toolStrip15->Text = L"toolStrip15";
 			// 
@@ -1061,24 +1248,25 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->Btn_Otsu->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Btn_Otsu.Image")));
 			this->Btn_Otsu->ImageTransparentColor = System::Drawing::Color::Magenta;
 			this->Btn_Otsu->Name = L"Btn_Otsu";
-			this->Btn_Otsu->Size = System::Drawing::Size(70, 24);
+			this->Btn_Otsu->Size = System::Drawing::Size(60, 24);
 			this->Btn_Otsu->Text = L"O\'tsu";
 			this->Btn_Otsu->Click += gcnew System::EventHandler(this, &MyForm::Btn_Otsu_Click);
 			// 
 			// Threshold_value
 			// 
-			this->Threshold_value->Location = System::Drawing::Point(12, 30);
+			this->Threshold_value->Location = System::Drawing::Point(9, 24);
+			this->Threshold_value->Margin = System::Windows::Forms::Padding(2);
 			this->Threshold_value->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 255, 0, 0, 0 });
 			this->Threshold_value->Name = L"Threshold_value";
-			this->Threshold_value->Size = System::Drawing::Size(130, 34);
+			this->Threshold_value->Size = System::Drawing::Size(98, 29);
 			this->Threshold_value->TabIndex = 0;
 			this->Threshold_value->ValueChanged += gcnew System::EventHandler(this, &MyForm::Threshold_value_ValueChanged);
 			// 
 			// MyForm
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 15);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1365, 935);
+			this->ClientSize = System::Drawing::Size(1024, 748);
 			this->Controls->Add(this->groupBox8);
 			this->Controls->Add(this->groupBox7);
 			this->Controls->Add(this->groupBox6);
@@ -1099,6 +1287,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->Controls->Add(this->groupbox1);
 			this->Controls->Add(this->menuStrip1);
 			this->MainMenuStrip = this->menuStrip1;
+			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
 			this->menuStrip1->ResumeLayout(false);
@@ -1126,6 +1315,10 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			this->toolStrip6->PerformLayout();
 			this->groupBox3->ResumeLayout(false);
 			this->groupBox3->PerformLayout();
+			this->toolStrip19->ResumeLayout(false);
+			this->toolStrip19->PerformLayout();
+			this->toolStrip18->ResumeLayout(false);
+			this->toolStrip18->PerformLayout();
 			this->toolStrip10->ResumeLayout(false);
 			this->toolStrip10->PerformLayout();
 			this->toolStrip9->ResumeLayout(false);
@@ -1139,6 +1332,8 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Otsu_Histogram;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->EndInit();
 			this->groupBox6->ResumeLayout(false);
 			this->groupBox6->PerformLayout();
+			this->toolStrip17->ResumeLayout(false);
+			this->toolStrip17->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->overlapping_trackbar))->EndInit();
 			this->toolStrip4->ResumeLayout(false);
 			this->toolStrip4->PerformLayout();
@@ -1353,13 +1548,13 @@ public: void LoadPCXFile(String ^filename, PCXData % PCXdata)
 		fs->Close(); //Ãö³¬FileStream
 
 }
-
 public:void ConvertColor(Bitmap ^src, Bitmap ^%dst, int code)  //scr­ì¹Ï dst³B²z«áªº¹Ï
 {
+
 	if (src != nullptr)
 	{
 		dst = gcnew Bitmap(src->Width, src->Height);
-		switch (code)  //¾î¦V±½¾ã±i¹Ï ¸Î¤å¬°ª½¦V±½
+		switch (code)  
 		{
 		case RGB2Gray:
 			for (int i = 0; i < src->Width; i++)
@@ -1367,7 +1562,7 @@ public:void ConvertColor(Bitmap ^src, Bitmap ^%dst, int code)  //scr­ì¹Ï dst³B²z
 				for (int j = 0; j < src->Height; j++)
 				{
 					//¦Ç¶¥¤Æ¤½¦¡:R*0.299 + G*0.587 + B*0.114+0.5
-					int grayvalue = src->GetPixel(i, j).R*0.299 + src->GetPixel(i, j).G*0.587 + src->GetPixel(i, j).B*0.114 +0.5;
+					int grayvalue = src->GetPixel(i, j).R*0.299 + src->GetPixel(i, j).G*0.587 + src->GetPixel(i, j).B*0.114 + 0.5;
 					dst->SetPixel(i, j, Color::FromArgb(grayvalue, grayvalue, grayvalue));
 
 				}
@@ -1431,7 +1626,6 @@ public:void ConvertColor(Bitmap ^src, Bitmap ^%dst, int code)  //scr­ì¹Ï dst³B²z
 	else
 		MessageBox::Show("No image input");
 }
-
 public:void Threshold(Bitmap ^src, Bitmap ^%dst, int threshold,int code)
 {
 	for (int i = 0; i < src->Width; i++) //½T»{¬O§_¦³¥ý¦Ç¶¥¤Æ
@@ -1467,7 +1661,6 @@ public:void Threshold(Bitmap ^src, Bitmap ^%dst, int threshold,int code)
 		}
 	}
 }
-
 public:void Flip(Bitmap ^src, Bitmap ^%dst, int code)
 {
 	if (src != nullptr)
@@ -1513,22 +1706,132 @@ public:void Flip(Bitmap ^src, Bitmap ^%dst, int code)
 	else
 		MessageBox::Show("No image input");
 }
-
 public:void ZoomFunction(Bitmap ^src, Bitmap ^%dst, double ZoomRate, int code)  //©ñ¤jÁY¤p
 {
 	if (ZoomRate > 0 && src != nullptr)
 	{
 		dst = gcnew Bitmap((int)src->Width*ZoomRate + 0.5, (int)src->Height*ZoomRate + 0.5);
+		//int width = src->Width*ZoomRate + 0.5;
+		//int height = src->Height*ZoomRate + 0.5;
 		switch (code)
 		{
-		case Duplication:
-			for (unsigned int i = 0; i<dst->Width; i++)
+		case Zoom:
+			for (unsigned int i = 0; i < dst->Width; i++)
 				for (unsigned int j = 0; j < dst->Height; j++)
 				{
 					float index_x = (float)(i / ZoomRate);
 					float index_y = (float)(j / ZoomRate);
 					dst->SetPixel(i, j, src->GetPixel((int)index_x + 0.5, (int)index_y + 0.5));
 				}
+			break;
+		case Duplication:
+			if (ZoomRate < 1)
+				MessageBox::Show("Please enter number bigger than 1.");
+			else
+			{
+				for (unsigned int i = 0; i < dst->Width; i++)
+					for (unsigned int j = 0; j < dst->Height; j++)
+					{
+						float index_x = (float)(i / ZoomRate);
+						float index_y = (float)(j / ZoomRate);
+						dst->SetPixel(i, j, src->GetPixel((int)index_x + 0.5, (int)index_y + 0.5));
+					}
+			}
+			break;
+		case Interpolation:
+			if (ZoomRate < 1)
+				MessageBox::Show("Please enter number bigger than 1.");
+			else
+			{
+				for (unsigned int j = 0; j < dst->Height; j++)
+				{
+					for (unsigned int i = 0; i < dst->Width; i++)
+					{
+
+						float real_X = i / ZoomRate;
+						float real_Y = j / ZoomRate;
+						int set_X = (int)real_X; //pixel¦ì¸m¬°¾ã¼Æ
+						int set_Y = (int)real_Y;
+						float difference_X = real_X - set_X;  //¹ê»Úpixel¦ì¸m»P©ñ¤j­¿¼Æ¶¡ªº»~®t
+						float difference_Y = real_Y - set_Y;
+						if (difference_X < 0)
+						{
+							difference_X = 1 + difference_X;
+							set_X = set_X - 1;
+						}
+
+						if (difference_Y < 0)
+						{
+							difference_Y = 1 + difference_Y;
+							set_Y = set_Y - 1;
+						}
+
+						if (set_X >= src->Width - 1)//ÀË¬d¬O§_¦³¶W¹L­ì¹Ïªº¼e(´¡­È·|¥H¾aªñªº¨º­Ópixel§@¬°¸ÓÂIªº­È¡A©Ò¥H¥i¯à¶W¥X½d³ò)
+						{
+							difference_X = 1;
+							set_X = set_X - 1;
+						}
+						if (set_Y >= src->Height - 1)//ÀË¬d¬O§_¦³¶W¹L­ì¹Ïªº°ª
+						{
+							difference_Y = 1;
+							set_Y = set_Y - 1;
+						}
+						int R = 0.5*((1 - difference_X) * (src->GetPixel(set_X, set_Y).R + src->GetPixel(set_X, set_Y).R) + difference_X * (src->GetPixel(set_X + 1, set_Y).R + src->GetPixel(set_X, set_Y + 1).R));
+						int G = 0.5*((1 - difference_X) * (src->GetPixel(set_X, set_Y).G + src->GetPixel(set_X, set_Y).G) + difference_X * (src->GetPixel(set_X + 1, set_Y).G + src->GetPixel(set_X, set_Y + 1).G));
+						int B = 0.5*((1 - difference_X) * (src->GetPixel(set_X, set_Y).B + src->GetPixel(set_X, set_Y).B) + difference_X * (src->GetPixel(set_X + 1, set_Y).B + src->GetPixel(set_X, set_Y + 1).B));
+
+						Color c = Color::FromArgb(R, G, B);
+						dst->SetPixel(i, j, c);
+						//dst->SetPixel(i, j, src->GetPixel((int)index_x + 0.5, (int)index_y + 0.5));
+					}
+				}
+			}
+			break;
+		case Decimation:
+			if (ZoomRate > 1)
+				MessageBox::Show("Please enter number smaller than 1.");
+			else
+			{
+				for (unsigned int i = 0; i < dst->Width; i++)
+					for (unsigned int j = 0; j < dst->Height; j++)
+					{
+						float index_x = (float)(i / ZoomRate);
+						float index_y = (float)(j / ZoomRate);
+						dst->SetPixel(i, j, src->GetPixel((int)index_x + 0.5, (int)index_y + 0.5));
+					}
+			}
+			break;
+		case Average:  //***¥u¯àÁY¤p0.5­¿¡A­n§ïcode***
+			if (ZoomRate > 1)
+				MessageBox::Show("Please enter number smaller than 1.");
+			else
+			{
+				double mean = (double)(ZoomRate*ZoomRate);
+				for (unsigned int j = 0; j < dst->Height; j++)
+				{
+					for (unsigned int i = 0; i < dst->Width; i++)
+					{
+						int ori_R = 0;
+						int ori_G = 0;
+						int ori_B = 0; 
+						for (int average_y = 0; average_y < (1/ZoomRate); average_y++)
+						{
+							for (int average_x = 0; average_x < (1/ZoomRate); average_x++)
+							{
+								int set_x = 2 * i + average_x;
+								int set_y = 2 * j + average_y;
+								ori_R += src->GetPixel(set_x, set_y).R;
+								ori_G += src->GetPixel(set_x, set_y).G;
+								ori_B += src->GetPixel(set_x, set_y).B;
+							}
+						}
+						ori_R = ori_R * mean;
+						ori_G = ori_G * mean;
+						ori_B = ori_B * mean;
+						dst->SetPixel(i, j, Color::FromArgb(ori_R, ori_G, ori_B));
+					}
+				}
+			}
 			break;
 			/*
 		case Other://­Y¤ñ¨Ò¤p©ó­ì¹Ï¥Î¥­§¡ªk¡A¤j©ó­ì¹Ï«h¥Î®t¤Àªk
@@ -1554,7 +1857,6 @@ public:void ZoomFunction(Bitmap ^src, Bitmap ^%dst, double ZoomRate, int code)  
 		MessageBox::Show("No Image yet or Rate cannot be smaller than zero!");
 	}
 }
-
 //¤â¼gÃ¸¹Ï
 /* ¤â¼gÃ¸¹Ï
 private:System::Void d_Line(Bitmap ^%dst, Point P1, Point P2)  //P1=°_ÂI P2=²×ÂI  ±µªñ¤ô¥­½u®É·|ÅÜµê½u¡A¶·­×¥¿
@@ -1676,14 +1978,16 @@ private:System::Void d_Rect(Bitmap ^%dst, Point P1, Point P2)  //P1:°_ÂI  P2:²×Â
 
 }
 */  
-
 public:void OverlappingFunction(int transparency) //transparency = ³z©ú«×
 {
 	short width,height;
-	Color c;
+	
 	if (img_source == nullptr || img_source2 == nullptr)
 	{
-		MessageBox::Show("No image input");
+		if (img_source == nullptr)
+			MessageBox::Show("No image1 input");
+		else
+			MessageBox::Show("No image2 input");
 	}
 	else
 	{
@@ -1698,12 +2002,13 @@ public:void OverlappingFunction(int transparency) //transparency = ³z©ú«×
 		{
 			for (int y = 0; y < height; y++)
 			{
+				Color color;
 				if ((x < img_source->Width) && (x < img_source2->Width) && (y < img_source->Height) && (y < img_source2->Height))
 				{
 					short R = (img_source2->GetPixel(x, y).R * transparency + img_source->GetPixel(x, y).R * (100 - transparency)) / 100;
 					short G = (img_source2->GetPixel(x, y).G * transparency + img_source->GetPixel(x, y).G * (100 - transparency)) / 100;
 					short B = (img_source2->GetPixel(x, y).B * transparency + img_source->GetPixel(x, y).B * (100 - transparency)) / 100;
-					c = Color::FromArgb(R, G, B);
+					color = Color::FromArgb(R, G, B);
 				}
 				else if ((x > img_source->Width) || (y > img_source->Height))
 				{
@@ -1712,7 +2017,7 @@ public:void OverlappingFunction(int transparency) //transparency = ³z©ú«×
 						short R = (img_source2->GetPixel(x, y).R * transparency + Color::AliceBlue.R * (100 - transparency)) / 100;
 						short G = (img_source2->GetPixel(x, y).G * transparency + Color::AliceBlue.G * (100 - transparency)) / 100;
 						short B = (img_source2->GetPixel(x, y).B * transparency + Color::AliceBlue.B * (100 - transparency)) / 100;
-						c = Color::FromArgb(R, G, B);
+						color = Color::FromArgb(R, G, B);
 					}
 
 				}
@@ -1723,16 +2028,40 @@ public:void OverlappingFunction(int transparency) //transparency = ³z©ú«×
 						short R = (Color::AliceBlue.R * transparency + img_source->GetPixel(x, y).R * (100 - transparency)) / 100;
 						short G = (Color::AliceBlue.G * transparency + img_source->GetPixel(x, y).G * (100 - transparency)) / 100;
 						short B = (Color::AliceBlue.B * transparency + img_source->GetPixel(x, y).B * (100 - transparency)) / 100;
-						c = Color::FromArgb(R, G, B);
+						color = Color::FromArgb(R, G, B);
 					}
 				}
-				img_processed->SetPixel(x, y, c);
+				img_processed->SetPixel(x, y, color);
 			}
 		}
 		pictureBox2->Image = img_processed;
 	}
 }
-
+public:void SubtractingFunction()
+{
+	if (img_source == nullptr || img_source2 == nullptr)
+	{
+		if(img_source == nullptr)
+			MessageBox::Show("No image1 input");
+		else
+			MessageBox::Show("No image2 input");
+	}
+	else
+	{
+		Bitmap^ img_processed = gcnew Bitmap(img_source->Width, img_source->Height);
+		for (int j = 0; j < (img_source->Height); j++)
+		{
+			for (int i = 0; i < (img_source->Width); i++)
+			{
+				short img_source1_Gray = (img_source->GetPixel(i, j).R) * 0.299 + (img_source->GetPixel(i, j).G) * 0.587 + (img_source->GetPixel(i, j).B) * 0.114 + 0.5;
+				short img_source2_Gray = (img_source2->GetPixel(i, j).R) * 0.299 + (img_source2->GetPixel(i, j).G) * 0.587 + (img_source2->GetPixel(i, j).B) * 0.114 + 0.5;
+				short subtracging_Gray = Math::Abs(img_source1_Gray - img_source2_Gray);  //¦Ç¶¥­È¬Û´î¨úµ´¹ï­È
+				img_processed->SetPixel(i, j, Color::FromArgb(subtracging_Gray, subtracging_Gray, subtracging_Gray));
+			}
+		}
+		pictureBox2->Image = img_processed;
+	}
+}
 public:void Threshold_Changing(Bitmap ^src, Bitmap ^%dst, int threshold)
 {
 	for (int i = 0; i < src->Width; i++)   //½T»{¬O§_¦³¥ý¦Ç¶¥¤Æ
@@ -1759,6 +2088,164 @@ public:void Threshold_Changing(Bitmap ^src, Bitmap ^%dst, int threshold)
 					dst->SetPixel(i, j, Color::FromArgb(0, 0, 0));  //¶Â
 			}
 
+		}
+	}
+}
+public:int Otsu_Threshold()
+{
+	Bitmap ^img_processed;
+	ConvertColor(img_source, img_processed, RGB2Gray); //¥ý±N¹ÏÂà¦¨¦Ç¶¥(¦]¬°­nºâ¦Ç­È²Î­p)
+	float His_color[256] = { 0 }; //¦Ç«×­È0~255 RGB­È§¡·|¬Û¦P
+	float total_pixel = (img_processed->Width) * (img_processed->Height); //­pºâ¾ã±i¹Ï¤ùªºpixel¼Æ
+
+																		  //*** 1. ¨ú±o¼v¹³ªºª½¤è¹Ï¡A­pºâ¥X¨C­Ó¦Ç«×­È¥X²{ªºpixel¼Æ ***
+	for (int x = 0; x < (img_processed->Width); x++)
+	{
+		for (int y = 0; y < (img_processed->Height); y++)
+		{
+			int color = img_processed->GetPixel(x, y).R;
+			if (color == img_processed->GetPixel(x, y).G && color == img_processed->GetPixel(x, y).B)  //·íRGB­È¬Û¦P(§Y¦Ç¦â)
+			{
+				His_color[color] += 1; //0~255¥X²{ªº¨º­Ó¦Ç«×­È+1¡A­pºâ¥X²{ÀW²v
+			}
+		}
+	}
+	//­pºâ¨C­Ó¦Ç«×­È¥X²{ªº¾÷²v
+	float P[256] = { 0 };
+	for (int i = 0; i < 256; i++)
+	{
+		P[i] = (His_color[i]) / total_pixel;
+	}
+	//­pºâ¦Ç«×­ÈÁ`¥­§¡
+	float mu = 0;
+	for (int i = 0; i < 256; i++)
+	{
+		mu += i*(P[i]);
+	}
+	//¶}©l­pºâ¦UºØ°Ñ¼Æ
+	float max_variance_between = 0; //ªì©l¤Æ¸s¶¡ÅÜ²§¼Æ³Ì¤j­È
+	int Otsu_threshold = 0;//ªì©l¤ÆOtsu»Ö­È
+
+	for (int i = 0; i < 256; i++) //¦Ç«×­È0~255
+	{
+		float w1 = 0, w2 = 0; //²Ä¤@¸s»P²Ä¤G¸s¥X²{ªº¾÷²v
+		float mu1 = 0, mu2 = 0; //²Ä¤@¸s»P²Ä¤G¸sªº¥­§¡
+		float variance1 = 0, variance2 = 0;//²Ä¤@¸s»P²Ä¤G¸sªºÅÜ²§¼Æ
+		float variance_between = 0;//¸s¶¡ÅÜ²§¼Æ
+
+		for (int t = 0; t < i; t++)  //­pºâ²Ä¤@¸s
+		{
+			w1 += P[t];
+		}
+		for (int t = 0; t < i; t++)
+		{
+			mu1 += t * (P[t] / w1);
+		}
+		/*for (int t = 0; t < i; t++)  //ÅÜ²§¼Æ¥Î¤£¨ì
+		{
+		variance1 += (P[t] / w1)*(t - mu1)*(t - mu1);
+		}*/
+		for (int t = i; t < 256; t++)  //­pºâ²Ä¤G¸s
+		{
+			w2 += P[t];
+		}
+		for (int t = i; t < 256; t++)
+		{
+			mu2 += t * (P[t] / w2);
+		}
+		/*for (int t = i; t < 256; t++)  //ÅÜ²§¼Æ¥Î¤£¨ì
+		{
+		variance2 += (P[t] / w2)*(t - mu2)*(t - mu2);
+		}*/
+
+		//Otsu¸s¶¡³Ì¤j®t²§ªºµû¦ô·Ç«h
+		variance_between = w1*(mu1 - mu)*(mu1 - mu) + w2*(mu2 - mu)*(mu2 - mu);
+		if (max_variance_between < variance_between)
+		{
+			max_variance_between = variance_between;
+			Otsu_threshold = i;   //***2. §Q¥ÎOtsu¹ïª½¤è¹Ï§ä¥X³Ì¨Îªº»Ö­È***
+		}
+	}
+	Threshold_Changing(img_processed, img_processed, Otsu_threshold);//*** 3. §Q¥Î§ä¥X¨Óªº»Ö­È±N¼v¹³¤G­È¤Æ***
+	Threshold_value->Text = Otsu_threshold.ToString();
+	pictureBox2->Image = img_processed;
+	return Otsu_threshold;
+}
+public:void Gray_HisFunction(Bitmap ^src, Bitmap ^%dst, int histogram_mode)
+{
+	if (src != nullptr)
+	{
+		ConvertColor(src, dst, RGB2Gray); //¥ý±N¹ÏÂà¦¨¦Ç¶¥(¦]¬°­nºâ¦Ç­È²Î­p
+		short Gray_Value[256] = { 0 }; //¦Ç«×­È0~255 RGB­È§¡·|¬Û¦P
+		switch (histogram_mode)
+		{
+			case gray_histogram:
+			{
+				GrayHistogram ^Gray_His = gcnew GrayHistogram;
+				pictureBox2->Image = dst;
+				for (int x = 0; x < (dst->Width); x++)
+				{
+					for (int y = 0; y < (dst->Height); y++)
+					{
+						int color = dst->GetPixel(x, y).B;
+						if (color == dst->GetPixel(x, y).R && color == dst->GetPixel(x, y).G)  //·íRGB­È¬Û¦P(§Y¦Ç¦â)
+						{
+							Gray_Value[color] += 1;
+						}
+					}
+				}
+				for (int i = 0; i < 256; i++)  //±N¦Ç«×­È¥X²{ªºÀW²v¿é¥X¨ì²Î­p¹Ï¤W
+				{
+					Gray_His->Gray_Chart->Series["Gray"]->Points->AddXY(i, Gray_Value[i]);  //»Ý­n±N.hÀÉ¤¤ªºGray_Chart§ï¦¨public¤~¥i¦s¨ú
+				}
+				Gray_His->Show(); //¨q¥X²Î­p¹Ï
+			}
+				break;
+
+			case specification_histogram_origin:
+			{
+				Specification_His->specific_origin->Image = dst;
+				for (int x = 0; x < (dst->Width); x++)
+				{
+					for (int y = 0; y < (dst->Height); y++)
+					{
+						int color = dst->GetPixel(x, y).B;
+						if (color == dst->GetPixel(x, y).R && color == dst->GetPixel(x, y).G)  //·íRGB­È¬Û¦P(§Y¦Ç¦â)
+						{
+							Gray_Value[color] += 1;
+						}
+					}
+				}
+				for (int i = 0; i < 256; i++)  //±N¦Ç«×­È¥X²{ªºÀW²v¿é¥X¨ì²Î­p¹Ï¤W
+				{
+					Specification_His->Origin_Chart->Series["Origin"]->Points->AddXY(i, Gray_Value[i]);  //»Ý­n±N.hÀÉ¤¤ªºGray_Chart§ï¦¨public¤~¥i¦s¨ú
+				}
+			}
+				break;
+
+			case specification_histogram_object:
+			{
+				
+				Specification_His->specific_object->Image = dst;
+				for (int x = 0; x < (dst->Width); x++)
+				{
+					for (int y = 0; y < (dst->Height); y++)
+					{
+						int color = dst->GetPixel(x, y).B;
+						if (color == dst->GetPixel(x, y).R && color == dst->GetPixel(x, y).G)  //·íRGB­È¬Û¦P(§Y¦Ç¦â)
+						{
+							Gray_Value[color] += 1;
+						}
+					}
+				}
+				for (int i = 0; i < 256; i++)  //±N¦Ç«×­È¥X²{ªºÀW²v¿é¥X¨ì²Î­p¹Ï¤W
+				{
+					Specification_His->Object_Chart->Series["Object"]->Points->AddXY(i, Gray_Value[i]);  //»Ý­n±N.hÀÉ¤¤ªºGray_Chart§ï¦¨public¤~¥i¦s¨ú
+				}
+				Specification_His->Show(); //¨q¥X²Î­p¹Ï
+				//delete Specification_His;
+			}
+				break;
 		}
 	}
 }
@@ -1811,6 +2298,7 @@ private: System::Void openfile2ToolStripMenuItem_Click(System::Object^  sender, 
 }
 private: System::Void Btn_Reset_Click(System::Object^  sender, System::EventArgs^  e) {
 	pictureBox2->Image = img_source;
+	overlapping_trackbar->Visible = false;
 }
 private: System::Void Exit_Click(System::Object^  sender, System::EventArgs^  e) {
 	Application::Exit();
@@ -1878,9 +2366,38 @@ private: System::Void Btn_Diagonal_Flip_Click(System::Object^  sender, System::E
 	pictureBox2->Image = img_processed;
 }
 private: System::Void Btn_Zoom_Click(System::Object^  sender, System::EventArgs^  e) {
+	//½Æ»sÁY©ñ
 	Bitmap ^imgprocessed;
 	double ZoomRate = System::Convert::ToDouble(Textbox_ZoomRate->Text);
-	ZoomFunction(img_source, imgprocessed, ZoomRate, Duplication);
+	ZoomFunction(img_source, imgprocessed, ZoomRate, Zoom);
+	pictureBox2->Image = imgprocessed;
+}
+private: System::Void Btn_Duplication_Enlarge_Click(System::Object^  sender, System::EventArgs^  e) {
+	//½Æ»s©ñ¤j
+	Bitmap ^imgprocessed = img_source;
+	double ZoomRate = System::Convert::ToDouble(Textbox_ZoomRate->Text);
+	ZoomFunction(imgprocessed, imgprocessed, ZoomRate, Duplication);
+	pictureBox2->Image = imgprocessed;
+}
+private: System::Void Btn_Interpolation_Enlarge_Click(System::Object^  sender, System::EventArgs^  e) {
+	//¤º´¡©ñ¤j
+	Bitmap ^imgprocessed = img_source;
+	double ZoomRate = System::Convert::ToDouble(Textbox_ZoomRate->Text);
+	ZoomFunction(imgprocessed, imgprocessed, ZoomRate, Interpolation);
+	pictureBox2->Image = imgprocessed;
+}
+private: System::Void Btn_Decimation_Reduce_Click(System::Object^  sender, System::EventArgs^  e) {
+	//§R¥hÁY¤p
+	Bitmap ^imgprocessed = img_source;
+	double ZoomRate = System::Convert::ToDouble(Textbox_ZoomRate->Text);
+	ZoomFunction(imgprocessed, imgprocessed, ZoomRate, Decimation);
+	pictureBox2->Image = imgprocessed;
+}
+private: System::Void Btn_Average_Reduce_Click(System::Object^  sender, System::EventArgs^  e) {
+	//¥­§¡ÁY¤p
+	Bitmap ^imgprocessed = img_source;
+	double ZoomRate = System::Convert::ToDouble(Textbox_ZoomRate->Text);
+	ZoomFunction(imgprocessed, imgprocessed, ZoomRate, Average);
 	pictureBox2->Image = imgprocessed;
 }
 private: System::Void pictureBox1_MouseMove(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
@@ -1981,7 +2498,7 @@ private: System::Void Btn_None_Draw_CheckedChanged(System::Object^  sender, Syst
 	//d_Pen = Pen_None;
 	pictureBox2->Image = img_source;
 }
-private: System::Void Btn_overlapping_Click(System::Object^  sender, System::EventArgs^  e) {
+private: System::Void Btn_Overlapping_Click(System::Object^  sender, System::EventArgs^  e) {
 	overlapping_trackbar->Visible = true;
 }
 private: System::Void overlapping_trackbar_Scroll(System::Object^  sender, System::EventArgs^  e) {
@@ -1991,33 +2508,14 @@ private: System::Void overlapping_trackbar_Scroll(System::Object^  sender, Syste
 }
 private: System::Void Btn_Gray_Histogran_Click(System::Object^  sender, System::EventArgs^  e) {
 	Bitmap ^img_processed;
-	GrayHistogram ^Gray_His = gcnew GrayHistogram;
-	ConvertColor(img_source, img_processed, RGB2Gray); //¥ý±N¹ÏÂà¦¨¦Ç¶¥(¦]¬°­nºâ¦Ç­È²Î­p
-	short His_color[256] = { 0 }; //¦Ç«×­È0~255 RGB­È§¡·|¬Û¦P
-
-	for (int x = 0; x < (img_processed->Width); x++)
-	{
-		for (int y = 0; y < (img_processed->Height); y++)
-		{
-			int color = img_processed->GetPixel(x, y).B;
-			if (color == img_processed->GetPixel(x, y).R && color == img_processed->GetPixel(x, y).G)  //·íRGB­È¬Û¦P(§Y¦Ç¦â)
-			{
-				His_color[color] += 1;
-			}
-		}
-	}
-	for (int i = 0; i < 256; i++)  //±N¦Ç«×­È¥X²{ªºÀW²v¿é¥X¨ì²Î­p¹Ï¤W
-	{
-		Gray_His->Gray_Chart->Series["Gray"]->Points->AddXY(i, His_color[i]);  //»Ý­n±N.hÀÉ¤¤ªºGray_Chart§ï¦¨public¤~¥i¦s¨ú
-	}
-	Gray_His-> Show(); //¨q¥X²Î­p¹Ï
+	Gray_HisFunction(img_source, img_processed, gray_histogram);
 }
 private: System::Void Btn_RGB_Histogram_Click(System::Object^  sender, System::EventArgs^  e) {
 	Bitmap ^img_processed;
 	RGBHistogram ^RGB_His = gcnew RGBHistogram;
 	short His_Color[256][3] = { {0} };  //«Ø¥ßRGB¯x°} 256:RGB value 3:RGB¤TºØÃC¦â
 	img_processed = img_source;
-
+	pictureBox2->Image = img_source;
 	for (int i = 0; i < (img_processed->Width); i++)
 	{
 		for (int j = 0; j < (img_processed->Height); j++)
@@ -2045,9 +2543,49 @@ private: System::Void Equalization_Histogram_Click(System::Object^  sender, Syst
 	Bitmap ^img_processed;
 	EqualizationHistogram ^Equa_His = gcnew EqualizationHistogram;
 	ConvertColor(img_source, img_processed, RGB2Gray);
+	int Gray_His[256] = { 0 };  //¦Ç¶¥­È¥X²{¦¸¼Æ
+	int Gray_His_Cumulation[256] = { 0 }; //¦Ç¶¥­È¦¸¼Æ²Ö¥[
 
+	int total_pixel = img_source->Width * img_source->Height;
 
+	for (int i = 0; i < img_processed->Width; i++)  //­pºâ¾ã±i¹Ï¤¤¨C­Ó¦Ç«×­È¥X²{ªº¦¸¼Æ
+	{
+		for (int j = 0; j < img_processed->Height; j++)
+		{
+			int color = img_processed->GetPixel(i, j).B;
+			if (color == img_processed->GetPixel(i, j).R && color == img_processed->GetPixel(i, j).G)
+			{
+				Gray_His[color] += 1;
+			}
+		}
+	}
 
+	Gray_His_Cumulation[0] = Gray_His[0];
+	for (int i = 1; i < 256; i++)  //²Ö¥[
+	{
+		Gray_His_Cumulation[i] = (Gray_His_Cumulation[i - 1] + Gray_His[i]);
+	}
+	for (int i = 0; i < 256; i++)
+	{
+		Equa_His->chart1->Series["Equalization"]->Points->AddXY(i, Gray_His_Cumulation[i]);
+	}
+	for (int i = 0; i < 256; i++)
+	{
+		float S_Pic = (float)Gray_His_Cumulation[i] / total_pixel * 255; //¥X²{¾÷²v*255 ºâÅv­«¶Ü?
+		Gray_His_Cumulation[i] = S_Pic + 0.5;  //¥|±Ë¤­¤J
+	}
+
+	for (int i = 0; i < img_processed->Width; i++)
+	{
+		for (int j = 0; j < img_processed->Height; j++)
+		{
+			int color = img_processed->GetPixel(i, j).B;
+			color = Gray_His_Cumulation[color];
+			img_processed->SetPixel(i, j, Color::FromArgb(color, color, color));
+		}
+	}
+	Equa_His->Show();
+	pictureBox2->Image = img_processed;
 }
 private: System::Void Threshold_value_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
 	Bitmap ^img_processed;
@@ -2061,85 +2599,59 @@ private: System::Void Btn_Otsu_Click(System::Object^  sender, System::EventArgs^
 	  1. ¨ú±o¼v¹³ªºª½¤è¹Ï
 	  2. §Q¥ÎOtsu¹ïª½¤è¹Ï§ä¥X³Ì¨Îªº»Ö­È
 	  3. §Q¥Î§ä¥X¨Óªº»Ö­È±N¼v¹³¤G­È¤Æ*/
+	/*¨BÆJ:
+	  1.ºâ¥X¾ã±i¹Ïªºpixel¼Æ
+	  2.°µ¥X¦Ç¶¥ª½¤è¹Ï
+	  3.ºâ¥X¨C­Ó¦Ç«×­È¥X²{ªº¾÷²v
+	  4.­pºâ¦Ç«×­ÈÁ`¥­§¡
+	  5.±N»Ö­È±q0~255§¡¸Õ¹L¤@¦¸¡A§Q¥Î»Ö­È¤Á¦¨¥ª¥k¨â¸s¡A¨Ì§Çºâ¥X¾÷²v¡B¥­§¡­È»P¸s¶¡ÅÜ²§¼Æ
+	  6.§ä¥X¸s¶¡ÅÜ²§¼Æ³Ì¤j­È¡A¸Ó¦Ç«×­Èªº»Ö­È§Y¬°Otsu»Ö­È
+	*/
+	Otsu_Threshold();
+}
+private: System::Void Btn_Subtracting_Click(System::Object^  sender, System::EventArgs^  e) {
+	SubtractingFunction();  //¼v¹³¬Û´î
+}
+private: System::Void Btn_Otsu_Histogram_Click(System::Object^  sender, System::EventArgs^  e) {
 	Bitmap ^img_processed;
-	ConvertColor(img_source, img_processed, RGB2Gray); //¥ý±N¹ÏÂà¦¨¦Ç¶¥(¦]¬°­nºâ¦Ç­È²Î­p)
-	float His_color[256] = { 0 }; //¦Ç«×­È0~255 RGB­È§¡·|¬Û¦P
-	float total_pixel = (img_processed->Width) * (img_processed->Height); //­pºâ¾ã±i¹Ï¤ùªºpixel¼Æ
+	OtsuHistogram ^Otsu_His = gcnew OtsuHistogram;
+	ConvertColor(img_source, img_processed, RGB2Gray); //¥ý±N¹ÏÂà¦¨¦Ç¶¥(¦]¬°­nºâ¦Ç­È²Î­p
+	short Gray_Value[256] = { 0 }; //¦Ç«×­È0~255 RGB­È§¡·|¬Û¦P
 
-	//*** 1. ¨ú±o¼v¹³ªºª½¤è¹Ï¡A­pºâ¥X¨C­Ó¦Ç«×­È¥X²{ªºpixel¼Æ ***
-	for (int x = 0; x < (img_processed->Width); x++) 
+	for (int x = 0; x < (img_processed->Width); x++) //²Î­p¦Ç«×­È¥X²{¦¸¼Æ
 	{
 		for (int y = 0; y < (img_processed->Height); y++)
 		{
-			int color = img_processed->GetPixel(x, y).R;
-			if (color == img_processed->GetPixel(x, y).G && color == img_processed->GetPixel(x, y).B)  //·íRGB­È¬Û¦P(§Y¦Ç¦â)
+			int color = img_processed->GetPixel(x, y).B;
+			if (color == img_processed->GetPixel(x, y).R && color == img_processed->GetPixel(x, y).G)  //·íRGB­È¬Û¦P(§Y¦Ç¦â)
 			{
-				His_color[color] += 1; //0~255¥X²{ªº¨º­Ó¦Ç«×­È+1¡A­pºâ¥X²{ÀW²v
+				Gray_Value[color] += 1;
 			}
 		}
 	}
-	//­pºâ¨C­Ó¦Ç«×­È¥X²{ªº¾÷²v
-	float P[256] = { 0 }; 
-	for (int i = 0; i < 256; i++)
+	int Otsu_threshold = Otsu_Threshold(); //¥ÎOtsuªk§ä¥X»Ö­È¥Nªíªº¦Ç«×­È
+	for (int i = 0; i < 256; i++)  //±N¦Ç«×­È¥X²{ªºÀW²v¿é¥X¨ì²Î­p¹Ï¤W
 	{
-		P[i] = (His_color[i]) / total_pixel;
+		Otsu_His->Otsu_Chart->Series["Gray"]->Points->AddXY(i, Gray_Value[i]);  //»Ý­n±N.hÀÉ¤¤ªºGray_Chart§ï¦¨public¤~¥i¦s¨ú
+		if(i == Otsu_threshold)
+			Otsu_His->Otsu_Chart->Series["Otsu"]->Points->AddXY(i, Gray_Value[i]);  //±NOtsuºâ¥Xªº¦Ç¶¥»Ö­È¼Ð¥Ü¦¨¬õ¦â
 	}
-	//­pºâ¦Ç«×­ÈÁ`¥­§¡
-	float mu = 0;
-	for (int i = 0; i < 256; i++)
+	Otsu_His->Show(); //¨q¥X²Î­p¹Ï
+}
+private: System::Void Specification_Histogram_Click(System::Object^  sender, System::EventArgs^  e) {
+	Bitmap ^img_processed1,^img_processed2;
+	if (img_source == nullptr || img_source2 == nullptr)
 	{
-		mu += i*(P[i]);
+		if (img_source == nullptr)
+			MessageBox::Show("No image1 input");
+		else
+			MessageBox::Show("No image2 input");
 	}
-	//¶}©l­pºâ¦UºØ°Ñ¼Æ
-	float max_variance_between = 0; //ªì©l¤Æ¸s¶¡ÅÜ²§¼Æ³Ì¤j­È
-	int Otsu_threshold = 0;//ªì©l¤ÆOtsu»Ö­È
-
-	for (int i = 0; i < 256; i++) //¦Ç«×­È0~255
+	else
 	{
-		float w1 = 0, w2 = 0; //²Ä¤@¸s»P²Ä¤G¸s¥X²{ªº¾÷²v
-		float mu1 = 0, mu2 = 0; //²Ä¤@¸s»P²Ä¤G¸sªº¥­§¡
-		float variance1 = 0, variance2 = 0;//²Ä¤@¸s»P²Ä¤G¸sªºÅÜ²§¼Æ
-		float variance_between = 0;//¸s¶¡ÅÜ²§¼Æ
-
-		for (int t = 0; t < i; t++)  //­pºâ²Ä¤@¸s
-		{
-			w1 += P[t];
-		}
-		for (int t = 0; t < i; t++)  
-		{
-			mu1 += t * (P[t] / w1);
-		}
-		/*for (int t = 0; t < i; t++)  //ÅÜ²§¼Æ¥Î¤£¨ì
-		{
-			variance1 += (P[t] / w1)*(t - mu1)*(t - mu1);
-		}*/
-
-
-		for (int t = i; t < 256; t++)  //­pºâ²Ä¤G¸s
-		{
-			w2 += P[t];
-		}
-		for (int t = i; t < 256; t++)  
-		{
-			mu2 += t * (P[t] / w2);
-		}
-		/*for (int t = i; t < 256; t++)  //ÅÜ²§¼Æ¥Î¤£¨ì
-		{
-			variance2 += (P[t] / w2)*(t - mu2)*(t - mu2);
-		}*/
-
-		//Otsu¸s¶¡³Ì¤j®t²§ªºµû¦ô·Ç«h
-		variance_between = w1*(mu1 - mu)*(mu1 - mu) + w2*(mu2 - mu)*(mu2 - mu);
-		if (max_variance_between < variance_between)
-		{
-			max_variance_between = variance_between;
-			Otsu_threshold = i;   //***2. §Q¥ÎOtsu¹ïª½¤è¹Ï§ä¥X³Ì¨Îªº»Ö­È***
-		}
+		Gray_HisFunction(img_source, img_processed1, specification_histogram_origin);
+		Gray_HisFunction(img_source2, img_processed2, specification_histogram_object);
 	}
-	Threshold_Changing(img_processed, img_processed, Otsu_threshold);//*** 3. §Q¥Î§ä¥X¨Óªº»Ö­È±N¼v¹³¤G­È¤Æ***
-	Threshold_value->Text = Otsu_threshold.ToString();
-	pictureBox2->Image = img_processed;
-
 }
 };
 }

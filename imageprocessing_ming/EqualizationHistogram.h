@@ -34,7 +34,13 @@ namespace imageprocessing_ming {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::DataVisualization::Charting::Chart^  chart1;
+	public: System::Windows::Forms::DataVisualization::Charting::Chart^  chart1;
+	private: System::Windows::Forms::Button^  Btn_EqualizationHistogram_Exit;
+	public:
+
+	public:
+
+	public:
 	protected:
 
 	private:
@@ -54,6 +60,7 @@ namespace imageprocessing_ming {
 			System::Windows::Forms::DataVisualization::Charting::Legend^  legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
 			System::Windows::Forms::DataVisualization::Charting::Series^  series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->chart1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
+			this->Btn_EqualizationHistogram_Exit = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -61,24 +68,39 @@ namespace imageprocessing_ming {
 			// 
 			chartArea1->Name = L"ChartArea1";
 			this->chart1->ChartAreas->Add(chartArea1);
+			legend1->ItemColumnSpacing = 1;
 			legend1->Name = L"Legend1";
 			this->chart1->Legends->Add(legend1);
-			this->chart1->Location = System::Drawing::Point(99, 54);
+			this->chart1->Location = System::Drawing::Point(20, 42);
+			this->chart1->Margin = System::Windows::Forms::Padding(2);
 			this->chart1->Name = L"chart1";
 			series1->ChartArea = L"ChartArea1";
+			series1->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
 			series1->Legend = L"Legend1";
 			series1->Name = L"Equalization";
 			this->chart1->Series->Add(series1);
-			this->chart1->Size = System::Drawing::Size(843, 479);
+			this->chart1->Size = System::Drawing::Size(742, 383);
 			this->chart1->TabIndex = 0;
 			this->chart1->Text = L"chart1";
 			// 
+			// Btn_EqualizationHistogram_Exit
+			// 
+			this->Btn_EqualizationHistogram_Exit->Location = System::Drawing::Point(690, 451);
+			this->Btn_EqualizationHistogram_Exit->Name = L"Btn_EqualizationHistogram_Exit";
+			this->Btn_EqualizationHistogram_Exit->Size = System::Drawing::Size(88, 41);
+			this->Btn_EqualizationHistogram_Exit->TabIndex = 1;
+			this->Btn_EqualizationHistogram_Exit->Text = L"Exit";
+			this->Btn_EqualizationHistogram_Exit->UseVisualStyleBackColor = true;
+			this->Btn_EqualizationHistogram_Exit->Click += gcnew System::EventHandler(this, &EqualizationHistogram::Btn_EqualizationHistogram_Exit_Click);
+			// 
 			// EqualizationHistogram
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 15);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1058, 632);
+			this->ClientSize = System::Drawing::Size(794, 506);
+			this->Controls->Add(this->Btn_EqualizationHistogram_Exit);
 			this->Controls->Add(this->chart1);
+			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"EqualizationHistogram";
 			this->Text = L"EqualizationHistogram";
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart1))->EndInit();
@@ -86,5 +108,8 @@ namespace imageprocessing_ming {
 
 		}
 #pragma endregion
+	private: System::Void Btn_EqualizationHistogram_Exit_Click(System::Object^  sender, System::EventArgs^  e) {
+		Close();
+	}
 	};
 }

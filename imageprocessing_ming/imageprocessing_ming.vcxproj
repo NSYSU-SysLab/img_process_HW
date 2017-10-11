@@ -89,6 +89,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <OpenMPSupport>false</OpenMPSupport>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -135,7 +136,9 @@
     <ClCompile Include="EqualizationHistogram.cpp" />
     <ClCompile Include="GrayHistogram.cpp" />
     <ClCompile Include="MyForm.cpp" />
+    <ClCompile Include="OtsuHistogram.cpp" />
     <ClCompile Include="RGBHistogram.cpp" />
+    <ClCompile Include="SpecificationHistogram.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bouncingball.h">
@@ -150,7 +153,13 @@
     <ClInclude Include="MyForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="OtsuHistogram.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="RGBHistogram.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="SpecificationHistogram.h">
       <FileType>CppForm</FileType>
     </ClInclude>
   </ItemGroup>
@@ -167,8 +176,14 @@
     <EmbeddedResource Include="MyForm.resx">
       <DependentUpon>MyForm.h</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="OtsuHistogram.resx">
+      <DependentUpon>OtsuHistogram.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RGBHistogram.resx">
       <DependentUpon>RGBHistogram.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SpecificationHistogram.resx">
+      <DependentUpon>SpecificationHistogram.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
