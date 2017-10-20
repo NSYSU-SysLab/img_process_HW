@@ -1,6 +1,8 @@
 #pragma once
 #include < stdio.h >  
 #include < stdlib.h >  
+#include<iostream>
+#include<cmath>
 #include"vcclr.h"
 #include<time.h>
 #include"Bouncingball.h"
@@ -212,6 +214,15 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Duplication_Enlarge;
 private: System::Windows::Forms::ToolStripButton^  Btn_Interpolation_Enlarge;
 private: System::Windows::Forms::ToolStrip^  toolStrip17;
 private: System::Windows::Forms::ToolStripButton^  Btn_Subtracting;
+private: System::Windows::Forms::ToolStrip^  toolStrip20;
+private: System::Windows::Forms::NumericUpDown^  Forward_rotation;
+
+private: System::Windows::Forms::ToolStripButton^  toolStripButton3;
+private: System::Windows::Forms::NumericUpDown^  Inverse_rotation;
+
+private: System::Windows::Forms::ToolStrip^  toolStrip21;
+private: System::Windows::Forms::ToolStripButton^  toolStripButton4;
+
 
 
 
@@ -312,6 +323,12 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Subtracting;
 			this->Pos_RGBvalue = (gcnew System::Windows::Forms::Label());
 			this->Btn_Reset = (gcnew System::Windows::Forms::Button());
 			this->groupBox5 = (gcnew System::Windows::Forms::GroupBox());
+			this->Inverse_rotation = (gcnew System::Windows::Forms::NumericUpDown());
+			this->toolStrip21 = (gcnew System::Windows::Forms::ToolStrip());
+			this->toolStripButton4 = (gcnew System::Windows::Forms::ToolStripButton());
+			this->Forward_rotation = (gcnew System::Windows::Forms::NumericUpDown());
+			this->toolStrip20 = (gcnew System::Windows::Forms::ToolStrip());
+			this->toolStripButton3 = (gcnew System::Windows::Forms::ToolStripButton());
 			this->tabControl1 = (gcnew System::Windows::Forms::TabControl());
 			this->tabPage1 = (gcnew System::Windows::Forms::TabPage());
 			this->tabPage2 = (gcnew System::Windows::Forms::TabPage());
@@ -357,6 +374,11 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Subtracting;
 			this->toolStrip10->SuspendLayout();
 			this->toolStrip9->SuspendLayout();
 			this->groupBox4->SuspendLayout();
+			this->groupBox5->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Inverse_rotation))->BeginInit();
+			this->toolStrip21->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Forward_rotation))->BeginInit();
+			this->toolStrip20->SuspendLayout();
 			this->tabControl1->SuspendLayout();
 			this->tabPage1->SuspendLayout();
 			this->tabPage2->SuspendLayout();
@@ -384,7 +406,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Subtracting;
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
 			this->menuStrip1->Padding = System::Windows::Forms::Padding(4, 2, 0, 2);
-			this->menuStrip1->Size = System::Drawing::Size(1024, 24);
+			this->menuStrip1->Size = System::Drawing::Size(1124, 24);
 			this->menuStrip1->TabIndex = 0;
 			this->menuStrip1->Text = L"menuStrip1";
 			// 
@@ -401,14 +423,14 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Subtracting;
 			// openfileToolStripMenuItem
 			// 
 			this->openfileToolStripMenuItem->Name = L"openfileToolStripMenuItem";
-			this->openfileToolStripMenuItem->Size = System::Drawing::Size(152, 22);
+			this->openfileToolStripMenuItem->Size = System::Drawing::Size(130, 22);
 			this->openfileToolStripMenuItem->Text = L"Openfile";
 			this->openfileToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::openfileToolStripMenuItem_Click);
 			// 
 			// openfile2ToolStripMenuItem
 			// 
 			this->openfile2ToolStripMenuItem->Name = L"openfile2ToolStripMenuItem";
-			this->openfile2ToolStripMenuItem->Size = System::Drawing::Size(152, 22);
+			this->openfile2ToolStripMenuItem->Size = System::Drawing::Size(130, 22);
 			this->openfile2ToolStripMenuItem->Text = L"Openfile2";
 			this->openfile2ToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::openfile2ToolStripMenuItem_Click);
 			// 
@@ -571,7 +593,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Subtracting;
 			// 
 			// pictureBox1
 			// 
-			this->pictureBox1->Location = System::Drawing::Point(0, 0);
+			this->pictureBox1->Location = System::Drawing::Point(-4, -6);
 			this->pictureBox1->Margin = System::Windows::Forms::Padding(2);
 			this->pictureBox1->Name = L"pictureBox1";
 			this->pictureBox1->Size = System::Drawing::Size(700, 600);
@@ -953,7 +975,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Subtracting;
 			this->Pos_RGBvalue->AutoSize = true;
 			this->Pos_RGBvalue->Font = (gcnew System::Drawing::Font(L"微軟正黑體", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->Pos_RGBvalue->Location = System::Drawing::Point(332, 160);
+			this->Pos_RGBvalue->Location = System::Drawing::Point(335, 160);
 			this->Pos_RGBvalue->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->Pos_RGBvalue->Name = L"Pos_RGBvalue";
 			this->Pos_RGBvalue->Size = System::Drawing::Size(43, 16);
@@ -973,16 +995,79 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Subtracting;
 			// 
 			// groupBox5
 			// 
+			this->groupBox5->Controls->Add(this->Inverse_rotation);
+			this->groupBox5->Controls->Add(this->toolStrip21);
+			this->groupBox5->Controls->Add(this->Forward_rotation);
+			this->groupBox5->Controls->Add(this->toolStrip20);
 			this->groupBox5->Font = (gcnew System::Drawing::Font(L"微軟正黑體", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
 			this->groupBox5->Location = System::Drawing::Point(478, 26);
 			this->groupBox5->Margin = System::Windows::Forms::Padding(2);
 			this->groupBox5->Name = L"groupBox5";
 			this->groupBox5->Padding = System::Windows::Forms::Padding(2);
-			this->groupBox5->Size = System::Drawing::Size(140, 80);
+			this->groupBox5->Size = System::Drawing::Size(170, 103);
 			this->groupBox5->TabIndex = 18;
 			this->groupBox5->TabStop = false;
 			this->groupBox5->Text = L"旋轉";
+			// 
+			// Inverse_rotation
+			// 
+			this->Inverse_rotation->Location = System::Drawing::Point(92, 68);
+			this->Inverse_rotation->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 360, 0, 0, 0 });
+			this->Inverse_rotation->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 360, 0, 0, System::Int32::MinValue });
+			this->Inverse_rotation->Name = L"Inverse_rotation";
+			this->Inverse_rotation->Size = System::Drawing::Size(60, 29);
+			this->Inverse_rotation->TabIndex = 3;
+			this->Inverse_rotation->ValueChanged += gcnew System::EventHandler(this, &MyForm::Inverse_rotation_ValueChanged);
+			// 
+			// toolStrip21
+			// 
+			this->toolStrip21->Dock = System::Windows::Forms::DockStyle::None;
+			this->toolStrip21->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->toolStripButton4 });
+			this->toolStrip21->Location = System::Drawing::Point(6, 68);
+			this->toolStrip21->Name = L"toolStrip21";
+			this->toolStrip21->Size = System::Drawing::Size(89, 27);
+			this->toolStrip21->TabIndex = 2;
+			this->toolStrip21->Text = L"toolStrip21";
+			// 
+			// toolStripButton4
+			// 
+			this->toolStripButton4->Font = (gcnew System::Drawing::Font(L"微軟正黑體", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(136)));
+			this->toolStripButton4->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"toolStripButton4.Image")));
+			this->toolStripButton4->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->toolStripButton4->Name = L"toolStripButton4";
+			this->toolStripButton4->Size = System::Drawing::Size(77, 24);
+			this->toolStripButton4->Text = L"逆推法";
+			// 
+			// Forward_rotation
+			// 
+			this->Forward_rotation->Location = System::Drawing::Point(95, 26);
+			this->Forward_rotation->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 360, 0, 0, 0 });
+			this->Forward_rotation->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 360, 0, 0, System::Int32::MinValue });
+			this->Forward_rotation->Name = L"Forward_rotation";
+			this->Forward_rotation->Size = System::Drawing::Size(57, 29);
+			this->Forward_rotation->TabIndex = 1;
+			this->Forward_rotation->ValueChanged += gcnew System::EventHandler(this, &MyForm::Forward_rotation_ValueChanged);
+			// 
+			// toolStrip20
+			// 
+			this->toolStrip20->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->toolStripButton3 });
+			this->toolStrip20->Location = System::Drawing::Point(2, 24);
+			this->toolStrip20->Name = L"toolStrip20";
+			this->toolStrip20->Size = System::Drawing::Size(166, 27);
+			this->toolStrip20->TabIndex = 0;
+			this->toolStrip20->Text = L"toolStrip20";
+			// 
+			// toolStripButton3
+			// 
+			this->toolStripButton3->Font = (gcnew System::Drawing::Font(L"微軟正黑體", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(136)));
+			this->toolStripButton3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"toolStripButton3.Image")));
+			this->toolStripButton3->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->toolStripButton3->Name = L"toolStripButton3";
+			this->toolStripButton3->Size = System::Drawing::Size(77, 24);
+			this->toolStripButton3->Text = L"順推法";
 			// 
 			// tabControl1
 			// 
@@ -1036,7 +1121,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Subtracting;
 			this->groupBox6->Controls->Add(this->toolStrip4);
 			this->groupBox6->Font = (gcnew System::Drawing::Font(L"微軟正黑體", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->groupBox6->Location = System::Drawing::Point(611, 25);
+			this->groupBox6->Location = System::Drawing::Point(670, 24);
 			this->groupBox6->Margin = System::Windows::Forms::Padding(2);
 			this->groupBox6->Name = L"groupBox6";
 			this->groupBox6->Padding = System::Windows::Forms::Padding(2);
@@ -1113,7 +1198,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Subtracting;
 			this->groupBox7->Controls->Add(this->toolStrip11);
 			this->groupBox7->Font = (gcnew System::Drawing::Font(L"微軟正黑體", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->groupBox7->Location = System::Drawing::Point(731, 24);
+			this->groupBox7->Location = System::Drawing::Point(789, 30);
 			this->groupBox7->Margin = System::Windows::Forms::Padding(2);
 			this->groupBox7->Name = L"groupBox7";
 			this->groupBox7->Padding = System::Windows::Forms::Padding(2);
@@ -1223,7 +1308,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Subtracting;
 			this->groupBox8->Controls->Add(this->Threshold_value);
 			this->groupBox8->Font = (gcnew System::Drawing::Font(L"微軟正黑體", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->groupBox8->Location = System::Drawing::Point(871, 30);
+			this->groupBox8->Location = System::Drawing::Point(929, 30);
 			this->groupBox8->Margin = System::Windows::Forms::Padding(2);
 			this->groupBox8->Name = L"groupBox8";
 			this->groupBox8->Padding = System::Windows::Forms::Padding(2);
@@ -1266,7 +1351,7 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Subtracting;
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1024, 748);
+			this->ClientSize = System::Drawing::Size(1124, 748);
 			this->Controls->Add(this->groupBox8);
 			this->Controls->Add(this->groupBox7);
 			this->Controls->Add(this->groupBox6);
@@ -1325,6 +1410,14 @@ private: System::Windows::Forms::ToolStripButton^  Btn_Subtracting;
 			this->toolStrip9->PerformLayout();
 			this->groupBox4->ResumeLayout(false);
 			this->groupBox4->PerformLayout();
+			this->groupBox5->ResumeLayout(false);
+			this->groupBox5->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Inverse_rotation))->EndInit();
+			this->toolStrip21->ResumeLayout(false);
+			this->toolStrip21->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Forward_rotation))->EndInit();
+			this->toolStrip20->ResumeLayout(false);
+			this->toolStrip20->PerformLayout();
 			this->tabControl1->ResumeLayout(false);
 			this->tabPage1->ResumeLayout(false);
 			this->tabPage1->PerformLayout();
@@ -2249,7 +2342,138 @@ public:void Gray_HisFunction(Bitmap ^src, Bitmap ^%dst, int histogram_mode)
 		}
 	}
 }
+public:void Rotation(Bitmap ^src, Bitmap ^%dst, double theta)
+{
+	double vcos, vsin;
+	int min_x = 1000;
+	int min_y = 1000;
+	if (theta < 0) theta += 360;
+	theta *= 0.01745329252; // 轉弳度
+	vsin = sin(theta), vcos = cos(theta);
+	int  newWidth = abs(src->Width*vcos) + abs(src->Height*vsin);
+	int newHeight = abs(src->Width*vsin) + abs(src->Height*vcos);
+	Bitmap^ temp_result = gcnew Bitmap(newWidth, newHeight, src->PixelFormat);
+	for (int i = 0; i < src->Width; i++)
+	{
+		for (int j = 0; j < src->Height; j++)
+		{
+			int nx, ny;  //旋轉後的x y座標
+			nx = (int)(vcos*i - vsin*j);
+			ny = (int)(vsin*i + vcos*j);
+			if (nx < 0)
+				int a = 5;
+			if (ny < 0)
+				int b = 5;
+			if (nx < min_x) min_x = nx;
+			if (ny < min_y) min_y = ny;
+		}
+	}
+	min_x = abs(min_x);
+	min_y = abs(min_y);
+	for (int i = 0; i < temp_result->Width; i++) //將矩形的顏色做成與背景同色
+		for (int j = 0; j < temp_result->Height; j++)
+		{
+			temp_result->SetPixel(i, j, Color::FromArgb(0, 0, 0));  //240
+		}
+	if (theta >= 0)
+	{
+		for (int i = 0; i < src->Width; i++)
+		{
+			for (int j = 0; j < src->Height; j++)
+			{
+				int nx, ny;
+				nx = (int)(vcos*i - vsin*j + min_x + 0.5);
+				ny = (int)(vsin*i + vcos*j + min_y + 0.5);
+				if (nx == 0) nx += 1;
+				if (ny == 0) ny += 1;
+				if (nx >= newWidth) nx = newWidth;
+				if (ny >= newHeight) ny = newHeight;
+				temp_result->SetPixel(nx - 1, ny - 1, src->GetPixel(i, j));
+			}
+		}
+	}
+	/*if (theta <= 0)
+	{
+		for (int i = 0; i < src->Width; i++)
+		{
+			for (int j = 0; j < src->Height; j++)
+			{
+				int nx, ny;
+				nx = (int)(vcos*i + vsin*j + min_x + 0.5);
+				ny = (int)((-1)*vsin*i + vcos*j + min_y + 0.5);
+				if (nx == 0) nx += 1;
+				if (ny == 0) ny += 1;
+				temp_result->SetPixel(nx - 1, ny - 1, src->GetPixel(i, j));
+				int a = 99;
+			}
+		}
+	}*/
+	Rectangle cloneRect = Rectangle(0, 0, temp_result->Width, temp_result->Height);
+	dst = temp_result->Clone(cloneRect, src->PixelFormat);
+	delete temp_result;
+}
+private:void Inverse_Rotation(Bitmap ^src, Bitmap ^%dst, double theta) {
 
+	double vcos, vsin;
+	int min_x = 1000;
+	int min_y = 1000;
+	if (theta < 0) theta += 360;
+	theta *= 0.01745329252; // 轉弳度
+	vsin = sin(theta), vcos = cos(theta);
+	int  newWidth = abs(src->Width*vcos) + abs(src->Height*vsin);
+	int newHeight = abs(src->Width*vsin) + abs(src->Height*vcos);
+	Bitmap^ temp_result = gcnew Bitmap(newWidth, newHeight, src->PixelFormat);
+
+	for (int i = 0; i < src->Width; i++)
+	{
+		for (int j = 0; j < src->Height; j++)
+		{
+			int nx, ny;  //旋轉後的x y座標
+			nx = (int)(vcos*i - vsin*j);
+			ny = (int)(vsin*i + vcos*j);
+			if (nx < 0)
+				int a = 5;
+			if (ny < 0)
+				int b = 5;
+			if (nx < min_x) min_x = nx;
+			if (ny < min_y) min_y = ny;
+		}
+	}
+	min_x = abs(min_x);
+	min_y = abs(min_y);
+	if (theta >= 0) {
+		for (uint16_t i = 0; i < temp_result->Width;i++)
+			for (uint16_t j = 0; j < temp_result->Height; j++)
+			{
+				int x_shift = i - src->Height*vsin;
+				int x_index = (int)(x_shift* vcos + j * vsin + 0.5);
+				int y_index = (int)(-x_shift*vsin + j * vcos + 0.5);
+
+				if (0 < x_index && x_index < src->Width && 0 < y_index && y_index <src->Height)  //與原圖重疊
+					temp_result->SetPixel(i, j, src->GetPixel(x_index, y_index));
+				else  //在原圖外
+					temp_result->SetPixel(i, j, Color::FromArgb(0, 0, 0));//240
+			}
+	}
+	if (theta < 0)
+	{
+		for (uint16_t i = 0; i < temp_result->Width; i++)
+			for (uint16_t j = 0; j < temp_result->Height; j++)
+			{
+				int y_shift = j - abs(src->Width*vsin);
+				int x_index = (int)(i * vcos + y_shift * vsin + 0.5);
+				int y_index = (int)(-i * vsin + y_shift * vcos + 0.5);
+
+				if (0 < x_index && x_index < src->Width && 0 < y_index && y_index <src->Height)
+					temp_result->SetPixel(i, j, src->GetPixel(x_index, y_index));
+				else
+					temp_result->SetPixel(i, j, Color::FromArgb(240, 240, 240));
+			}
+	}
+	Rectangle cloneRect = Rectangle(0, 0, temp_result->Width, temp_result->Height);
+	dst = temp_result->Clone(cloneRect, src->PixelFormat);
+	delete temp_result;
+}
 //******************************Form Design*********************
 private: System::Void openfileToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
 	OpenFileDialog ^openfiledialog1 = gcnew OpenFileDialog;
@@ -2652,6 +2876,18 @@ private: System::Void Specification_Histogram_Click(System::Object^  sender, Sys
 		Gray_HisFunction(img_source, img_processed1, specification_histogram_origin);
 		Gray_HisFunction(img_source2, img_processed2, specification_histogram_object);
 	}
+}
+private: System::Void Forward_rotation_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
+	Bitmap ^img_processed;
+	int theta = Convert::ToInt32(Forward_rotation->Text);//讀取輸入的角度
+	Rotation(img_source, img_processed, theta);
+	pictureBox2->Image = img_processed;
+}
+private: System::Void Inverse_rotation_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
+	Bitmap ^img_processed;
+	int theta = Convert::ToInt32(Inverse_rotation->Text);//讀取輸入的角度
+	Inverse_Rotation(img_source, img_processed, theta);
+	pictureBox2->Image = img_processed;
 }
 };
 }
