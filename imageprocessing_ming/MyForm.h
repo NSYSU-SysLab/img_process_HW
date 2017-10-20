@@ -2347,36 +2347,36 @@ public:void Rotation(Bitmap ^src, Bitmap ^%dst, double theta)
 	double vcos, vsin;
 	int min_x = 1000;
 	int min_y = 1000;
-	if (theta < 0) theta += 360;
+	if (theta < 0) theta += 360;  //ex:轉-30度跟轉330度是一樣的意思
 	theta *= 0.01745329252; // 轉弳度
-	vsin = sin(theta), vcos = cos(theta);
-	int  newWidth = abs(src->Width*vcos) + abs(src->Height*vsin);
-	int newHeight = abs(src->Width*vsin) + abs(src->Height*vcos);
-	Bitmap^ temp_result = gcnew Bitmap(newWidth, newHeight, src->PixelFormat);
-	for (int i = 0; i < src->Width; i++)
+	vsin = sin(theta), vcos = cos(theta);  //找出sin cos值
+	if (img_source == nullptr)
+		MessageBox::Show("No image1 input");
+	else
 	{
-		for (int j = 0; j < src->Height; j++)
+		int  newWidth = abs(src->Width*vcos) + abs(src->Height*vsin);  //找出原圖旋轉後用來塞入原圖的矩形長寬
+		int newHeight = abs(src->Width*vsin) + abs(src->Height*vcos);  //
+		Bitmap^ temp_result = gcnew Bitmap(newWidth, newHeight, src->PixelFormat);  //創建出一個可以塞下旋轉後矩形的矩形
+
+
+		for (int i = 0; i < src->Width; i++)
 		{
-			int nx, ny;  //旋轉後的x y座標
-			nx = (int)(vcos*i - vsin*j);
-			ny = (int)(vsin*i + vcos*j);
-			if (nx < 0)
-				int a = 5;
-			if (ny < 0)
-				int b = 5;
-			if (nx < min_x) min_x = nx;
-			if (ny < min_y) min_y = ny;
+			for (int j = 0; j < src->Height; j++)
+			{
+				int nx, ny;  //旋轉後的x y座標
+				nx = (int)(vcos*i - vsin*j);
+				ny = (int)(vsin*i + vcos*j);
+				if (nx < min_x) min_x = nx;  //找出原作標轉換後的最小座標點min_x min_y(因為是原點當圓心轉所以會是負值或0)
+				if (ny < min_y) min_y = ny;
+			}
 		}
-	}
-	min_x = abs(min_x);
-	min_y = abs(min_y);
-	for (int i = 0; i < temp_result->Width; i++) //將矩形的顏色做成與背景同色
-		for (int j = 0; j < temp_result->Height; j++)
-		{
-			temp_result->SetPixel(i, j, Color::FromArgb(0, 0, 0));  //240
-		}
-	if (theta >= 0)
-	{
+		min_x = abs(min_x);  //取絕對值求得偏移量，用來將旋轉後的圖修正回座標均大於等於0
+		min_y = abs(min_y);
+		for (int i = 0; i < temp_result->Width; i++) //將矩形的顏色做成與背景同色
+			for (int j = 0; j < temp_result->Height; j++)
+			{
+				temp_result->SetPixel(i, j, Color::FromArgb(0, 0, 0));  //240
+			}
 		for (int i = 0; i < src->Width; i++)
 		{
 			for (int j = 0; j < src->Height; j++)
@@ -2384,95 +2384,61 @@ public:void Rotation(Bitmap ^src, Bitmap ^%dst, double theta)
 				int nx, ny;
 				nx = (int)(vcos*i - vsin*j + min_x + 0.5);
 				ny = (int)(vsin*i + vcos*j + min_y + 0.5);
-				if (nx == 0) nx += 1;
-				if (ny == 0) ny += 1;
-				if (nx >= newWidth) nx = newWidth;
-				if (ny >= newHeight) ny = newHeight;
-				temp_result->SetPixel(nx - 1, ny - 1, src->GetPixel(i, j));
+				if ((nx < newWidth) && (ny < newHeight)) //檢查是否有在原圖旋轉後產生的矩形中
+					temp_result->SetPixel(nx, ny, src->GetPixel(i, j));
 			}
 		}
+		Rectangle cloneRect = Rectangle(0, 0, temp_result->Width, temp_result->Height);
+		dst = temp_result->Clone(cloneRect, src->PixelFormat);
+		delete temp_result;
 	}
-	/*if (theta <= 0)
-	{
-		for (int i = 0; i < src->Width; i++)
-		{
-			for (int j = 0; j < src->Height; j++)
-			{
-				int nx, ny;
-				nx = (int)(vcos*i + vsin*j + min_x + 0.5);
-				ny = (int)((-1)*vsin*i + vcos*j + min_y + 0.5);
-				if (nx == 0) nx += 1;
-				if (ny == 0) ny += 1;
-				temp_result->SetPixel(nx - 1, ny - 1, src->GetPixel(i, j));
-				int a = 99;
-			}
-		}
-	}*/
-	Rectangle cloneRect = Rectangle(0, 0, temp_result->Width, temp_result->Height);
-	dst = temp_result->Clone(cloneRect, src->PixelFormat);
-	delete temp_result;
 }
 private:void Inverse_Rotation(Bitmap ^src, Bitmap ^%dst, double theta) {
 
 	double vcos, vsin;
 	int min_x = 1000;
 	int min_y = 1000;
-	if (theta < 0) theta += 360;
+	if (theta < 0) theta += 360;  //ex:轉-30度跟轉330度是一樣的意思
 	theta *= 0.01745329252; // 轉弳度
-	vsin = sin(theta), vcos = cos(theta);
-	int  newWidth = abs(src->Width*vcos) + abs(src->Height*vsin);
-	int newHeight = abs(src->Width*vsin) + abs(src->Height*vcos);
-	Bitmap^ temp_result = gcnew Bitmap(newWidth, newHeight, src->PixelFormat);
-
-	for (int i = 0; i < src->Width; i++)
+	vsin = sin(theta), vcos = cos(theta);  //找出sin cos值
+	if (img_source == nullptr)
+		MessageBox::Show("No image1 input");
+	else
 	{
-		for (int j = 0; j < src->Height; j++)
+		int  newWidth = abs(src->Width*vcos) + abs(src->Height*vsin);  //找出原圖旋轉後用來塞入原圖的矩形長寬
+		int newHeight = abs(src->Width*vsin) + abs(src->Height*vcos);  //
+		Bitmap^ temp_result = gcnew Bitmap(newWidth, newHeight, src->PixelFormat);//創建出一個可以塞下旋轉後矩形的矩形
+
+
+		for (int i = 0; i < src->Width; i++)
 		{
-			int nx, ny;  //旋轉後的x y座標
-			nx = (int)(vcos*i - vsin*j);
-			ny = (int)(vsin*i + vcos*j);
-			if (nx < 0)
-				int a = 5;
-			if (ny < 0)
-				int b = 5;
-			if (nx < min_x) min_x = nx;
-			if (ny < min_y) min_y = ny;
+			for (int j = 0; j < src->Height; j++)
+			{
+				int nx, ny;  //原圖旋轉後的x y座標
+				nx = (int)(vcos*i - vsin*j);
+				ny = (int)(vsin*i + vcos*j);
+				if (nx < min_x) min_x = nx;  //找出原作標轉換後的最小座標點min_x min_y(因為是原點當圓心轉所以會是負值或0)
+				if (ny < min_y) min_y = ny;
+			}
 		}
-	}
-	min_x = abs(min_x);
-	min_y = abs(min_y);
-	if (theta >= 0) {
-		for (uint16_t i = 0; i < temp_result->Width;i++)
-			for (uint16_t j = 0; j < temp_result->Height; j++)
+		for (int i = min_x; i < min_x + newWidth; i++)
+		{
+			for (int j = min_y; j < min_y + newHeight; j++)
 			{
-				int x_shift = i - src->Height*vsin;
-				int x_index = (int)(x_shift* vcos + j * vsin + 0.5);
-				int y_index = (int)(-x_shift*vsin + j * vcos + 0.5);
-
-				if (0 < x_index && x_index < src->Width && 0 < y_index && y_index <src->Height)  //與原圖重疊
-					temp_result->SetPixel(i, j, src->GetPixel(x_index, y_index));
-				else  //在原圖外
-					temp_result->SetPixel(i, j, Color::FromArgb(0, 0, 0));//240
+				int nx, ny;  //逆旋轉後的x y座標
+				nx = (int)(vcos*i + vsin*j + 0.5);
+				ny = (int)(-vsin*i + vcos*j + 0.5);
+				if ((nx < src->Width) && (nx > 0) && (ny < src->Height) && (ny > 0))  //在原圖內
+					temp_result->SetPixel(i + abs(min_x), j + abs(min_y), src->GetPixel(nx, ny));  //abs用來修正偏移量
+				else  //在原圖外(設成與背景相同顏色)
+					temp_result->SetPixel(i + abs(min_x), j + abs(min_y), Color::FromArgb(0, 0, 0));  //240
 			}
-	}
-	if (theta < 0)
-	{
-		for (uint16_t i = 0; i < temp_result->Width; i++)
-			for (uint16_t j = 0; j < temp_result->Height; j++)
-			{
-				int y_shift = j - abs(src->Width*vsin);
-				int x_index = (int)(i * vcos + y_shift * vsin + 0.5);
-				int y_index = (int)(-i * vsin + y_shift * vcos + 0.5);
+		}
 
-				if (0 < x_index && x_index < src->Width && 0 < y_index && y_index <src->Height)
-					temp_result->SetPixel(i, j, src->GetPixel(x_index, y_index));
-				else
-					temp_result->SetPixel(i, j, Color::FromArgb(240, 240, 240));
-			}
+		Rectangle cloneRect = Rectangle(0, 0, temp_result->Width, temp_result->Height);
+		dst = temp_result->Clone(cloneRect, src->PixelFormat);
+		delete temp_result;
 	}
-	Rectangle cloneRect = Rectangle(0, 0, temp_result->Width, temp_result->Height);
-	dst = temp_result->Clone(cloneRect, src->PixelFormat);
-	delete temp_result;
 }
 //******************************Form Design*********************
 private: System::Void openfileToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -2879,14 +2845,22 @@ private: System::Void Specification_Histogram_Click(System::Object^  sender, Sys
 }
 private: System::Void Forward_rotation_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
 	Bitmap ^img_processed;
-	int theta = Convert::ToInt32(Forward_rotation->Text);//讀取輸入的角度
-	Rotation(img_source, img_processed, theta);
+	//int theta = Convert::ToInt32(Forward_rotation->Text);//讀取輸入的角度
+	for (int theta = -360; theta <= 360; theta++)
+	{
+		Rotation(img_source, img_processed, theta);
+	}
+	//Rotation(img_source, img_processed, theta);
 	pictureBox2->Image = img_processed;
 }
 private: System::Void Inverse_rotation_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
 	Bitmap ^img_processed;
-	int theta = Convert::ToInt32(Inverse_rotation->Text);//讀取輸入的角度
-	Inverse_Rotation(img_source, img_processed, theta);
+	//int theta = Convert::ToInt32(Inverse_rotation->Text);//讀取輸入的角度
+	for (int theta = -360; theta <= 360; theta++)
+	{
+		Inverse_Rotation(img_source, img_processed, theta);
+	}
+	//Inverse_Rotation(img_source, img_processed, theta);
 	pictureBox2->Image = img_processed;
 }
 };
