@@ -2845,22 +2845,14 @@ private: System::Void Specification_Histogram_Click(System::Object^  sender, Sys
 }
 private: System::Void Forward_rotation_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
 	Bitmap ^img_processed;
-	//int theta = Convert::ToInt32(Forward_rotation->Text);//讀取輸入的角度
-	for (int theta = -360; theta <= 360; theta++)
-	{
-		Rotation(img_source, img_processed, theta);
-	}
-	//Rotation(img_source, img_processed, theta);
+	int theta = Convert::ToInt32(Forward_rotation->Text);//讀取輸入的角度
+	Rotation(img_source, img_processed, theta);
 	pictureBox2->Image = img_processed;
 }
 private: System::Void Inverse_rotation_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
 	Bitmap ^img_processed;
-	//int theta = Convert::ToInt32(Inverse_rotation->Text);//讀取輸入的角度
-	for (int theta = -360; theta <= 360; theta++)
-	{
-		Inverse_Rotation(img_source, img_processed, theta);
-	}
-	//Inverse_Rotation(img_source, img_processed, theta);
+	int theta = Convert::ToInt32(Inverse_rotation->Text);//讀取輸入的角度
+	Inverse_Rotation(img_source, img_processed, theta);
 	pictureBox2->Image = img_processed;
 }
 };
